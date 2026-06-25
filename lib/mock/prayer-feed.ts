@@ -1,0 +1,68 @@
+import type { PrayerAlert } from "@/lib/types";
+
+export const PRAYER_FEED: PrayerAlert[] = [
+  {
+    id: "p1",
+    churchName: "Cornerstone Fellowship",
+    title: "Live prayer call · Healing & hope",
+    body: "Pastor Elena is leading a 20-minute prayer call for those carrying anxiety. Drop in any time.",
+    isLive: true,
+    timestamp: "Now",
+  },
+  {
+    id: "p2",
+    churchName: "Cornerstone Fellowship",
+    title: "Prayer for the Martinez family",
+    body: "Anonymized request: please lift up a family walking through a hard medical diagnosis.",
+    isLive: false,
+    timestamp: "12 min ago",
+  },
+  {
+    id: "p3",
+    churchName: "Cornerstone Fellowship",
+    title: "Live · Tuesday morning intercession",
+    body: "Open call for the week ahead. Bring whatever's on your heart.",
+    isLive: true,
+    timestamp: "Now",
+  },
+  {
+    id: "p4",
+    churchName: "Cornerstone Fellowship",
+    title: "Praise report · A long-awaited yes",
+    body: "A member shared joyful news this morning — celebrate with the community.",
+    isLive: false,
+    timestamp: "2 hr ago",
+  },
+  {
+    id: "p5",
+    churchName: "Cornerstone Fellowship",
+    title: "Pastor Malachi's evening reflection",
+    body: "A 5-minute audio devotional on Psalm 46 — be still, and know.",
+    isLive: false,
+    timestamp: "Yesterday",
+  },
+  {
+    id: "p6",
+    churchName: "Cornerstone Fellowship",
+    title: "Prayer for our city",
+    body: "Joining the wider church in prayer for peace, leaders, and the vulnerable.",
+    isLive: false,
+    timestamp: "Yesterday",
+  },
+  {
+    id: "p7",
+    churchName: "Cornerstone Fellowship",
+    title: "Anonymous: anxious about a job interview tomorrow",
+    body: "A member asks for prayer for calm and clarity ahead of an interview.",
+    isLive: false,
+    timestamp: "2 days ago",
+  },
+  {
+    id: "p8",
+    churchName: "Cornerstone Fellowship",
+    title: "Sunday small-group recap",
+    body: "Reflections from the small-group gathering — themes of grace and rest.",
+    isLive: false,
+    timestamp: "3 days ago",
+  },
+];
