@@ -23,16 +23,11 @@ export default function BiblePage() {
         <ChevronLeft className="h-4 w-4" /> Today
       </Link>
 
-      <header className="relative space-y-2">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-4 right-0 h-32 w-48 rounded-full opacity-30 blur-3xl"
-          style={{ background: "radial-gradient(ellipse, rgba(146,182,240,0.5) 0%, transparent 70%)" }}
-        />
+      <header className="topo-bg relative space-y-2">
         <p className="eyebrow relative">Bible · Reflection</p>
-        <h1 className="relative font-display text-[1.875rem] font-semibold leading-tight tracking-[-0.025em] text-[#1E293B] sm:text-[2.25rem]">
+        <h1 className="heading-engraved relative font-display text-[1.875rem] font-semibold leading-tight tracking-[-0.025em] text-[#0d1f3c] sm:text-[2.25rem]">
           Which biblical figure{" "}
-          <span className="italic font-medium text-[#1E4170]">resonates with you?</span>
+          <span className="italic font-medium text-[#2a3f6b]">resonates with you?</span>
         </h1>
         <p className="relative max-w-prose text-[0.9rem] text-muted-foreground">
           Ten reflective questions, around three minutes. There are no right

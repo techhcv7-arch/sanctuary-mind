@@ -23,7 +23,7 @@ export function BottomNav() {
   return (
     <nav
       aria-label="Primary"
-      className="border-t border-[#92b6f0]/25 bg-[#c2d6f6]/90 backdrop-blur-md"
+      className="border-t border-white/10 bg-[#92b6f0]"
     >
       <ul className="mx-auto flex w-full max-w-3xl items-stretch justify-between px-2 py-1.5">
         {TABS.map(({ href, label, icon: Icon }) => {
@@ -35,13 +35,13 @@ export function BottomNav() {
               <Link
                 href={href}
                 aria-current={active ? "page" : undefined}
-                className="group flex flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 transition"
+                className="group flex flex-col items-center justify-center gap-1 px-1 py-2 transition"
               >
                 <span
-                  className={`grid h-8 w-8 place-items-center rounded-lg transition ${
+                  className={`grid h-8 w-8 place-items-center transition ${
                     active
-                      ? "bg-[#3D5A87] text-white shadow-[0_4px_12px_rgba(61,90,135,0.35)]"
-                      : "text-[#3D5A87]/50 group-hover:bg-[#92b6f0]/25 group-hover:text-[#3D5A87]"
+                      ? "bg-[#0d1f3c] text-white shadow-[0_4px_12px_rgba(13,31,60,0.35)]"
+                      : "text-[#0d1f3c]/50 group-hover:bg-[#92b6f0]/25 group-hover:text-[#0d1f3c]"
                   }`}
                 >
                   <Icon
@@ -51,7 +51,7 @@ export function BottomNav() {
                 </span>
                 <span
                   className={`font-sans text-[0.58rem] font-semibold tracking-wide transition ${
-                    active ? "text-[#1E293B]" : "text-[#3D5A87]/40 group-hover:text-[#3D5A87]"
+                    active ? "font-bold text-[#0d1f3c]" : "text-[#0d1f3c]/40 group-hover:text-[#0d1f3c]"
                   }`}
                 >
                   {label}

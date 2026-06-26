@@ -55,7 +55,7 @@ export default function SessionPage() {
   return (
     <div
       className="-mx-4 -my-6 flex min-h-[calc(100vh-3.5rem)] flex-col"
-      style={{ background: "linear-gradient(160deg, #a0bff0 0%, #b2cbf2 50%, #c2d6f6 100%)" }}
+      style={{ background: "#92b6f0" }}
     >
       {/* Top bar */}
       <header className="flex items-center justify-between px-5 py-5">
@@ -63,19 +63,19 @@ export default function SessionPage() {
           type="button"
           onClick={() => router.back()}
           aria-label="Back"
-          className="rounded-xl p-2 text-[#1E293B]/60 transition hover:bg-[#3D5A87]/15 hover:text-[#1E293B]"
+          className="rounded-xl p-2 text-[#0d1f3c]/60 transition hover:bg-[#3D5A87]/15 hover:text-[#0d1f3c]"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
 
         <div className="flex items-center gap-2 rounded-full border border-[#3D5A87]/25 bg-white/40 px-3 py-1.5">
           <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-          <span className="font-sans text-[0.65rem] font-semibold uppercase tracking-widest text-[#1E293B]/70">
+          <span className="font-sans text-[0.65rem] font-semibold uppercase tracking-widest text-[#0d1f3c]/70">
             Encrypted
           </span>
         </div>
 
-        <span className="font-sans text-sm font-semibold tabular text-[#1E293B]/70">
+        <span className="font-sans text-sm font-semibold tabular text-[#0d1f3c]/70">
           {mm}:{ss}
         </span>
       </header>
@@ -144,7 +144,7 @@ export default function SessionPage() {
           className={`grid h-12 w-12 place-items-center rounded-full transition ${
             muted
               ? "bg-[#DC2626] text-white"
-              : "bg-[#3D5A87]/20 text-[#1E293B] hover:bg-[#3D5A87]/35"
+              : "bg-[#3D5A87]/20 text-[#0d1f3c] hover:bg-[#3D5A87]/35"
           }`}
         >
           {muted ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
@@ -156,7 +156,7 @@ export default function SessionPage() {
           className={`grid h-12 w-12 place-items-center rounded-full transition ${
             !camOn
               ? "bg-[#DC2626] text-white"
-              : "bg-[#3D5A87]/20 text-[#1E293B] hover:bg-[#3D5A87]/35"
+              : "bg-[#3D5A87]/20 text-[#0d1f3c] hover:bg-[#3D5A87]/35"
           }`}
         >
           {camOn ? <Camera className="h-5 w-5" /> : <CameraOff className="h-5 w-5" />}

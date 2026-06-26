@@ -75,17 +75,11 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Greeting */}
-      <header className="relative space-y-1 pt-2">
-        {/* Aurora blob */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-8 left-1/2 h-40 w-64 -translate-x-1/2 rounded-full opacity-40 blur-3xl"
-          style={{ background: "radial-gradient(ellipse, var(--aurora-1) 0%, transparent 70%)" }}
-        />
+      <header className="topo-bg relative space-y-1 pt-2">
         <p className="eyebrow relative">{today}</p>
-        <h1 className="relative font-display text-[2rem] font-semibold leading-tight tracking-[-0.025em] text-[#1E293B] sm:text-[2.5rem]">
+        <h1 className="heading-engraved relative font-display text-[2rem] font-semibold leading-tight tracking-[-0.025em] text-[#0d1f3c] sm:text-[2.5rem]">
           Peace be with you,{" "}
-          <span className="italic font-medium text-[#1E4170]">
+          <span className="italic font-medium">
             {user?.fullName ? user.fullName.split(" ")[0] : "friend"}.
           </span>
         </h1>
@@ -97,15 +91,7 @@ export default function DashboardPage() {
       </header>
 
       {/* Verse card */}
-      <div className="glass-card relative overflow-hidden px-5 py-5">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute right-0 top-0 h-full w-24 opacity-[0.15]"
-          style={{
-            background:
-              "radial-gradient(ellipse at right, #92b6f0 0%, transparent 70%)",
-          }}
-        />
+      <div className="monolith-plate thud-in thud-in-1 overflow-hidden px-5 py-5">
         <p className="eyebrow mb-2">A verse for today</p>
         <p className="pull-quote text-[1.15rem] text-foreground sm:text-[1.3rem]">
           &ldquo;He heals the brokenhearted, and binds up their wounds.&rdquo;
@@ -114,6 +100,8 @@ export default function DashboardPage() {
           Psalm 147 · 3
         </p>
       </div>
+
+      <hr className="fault-line my-2" aria-hidden />
 
       {/* Crisis banner */}
       <CrisisBanner dismissible />
@@ -124,18 +112,15 @@ export default function DashboardPage() {
         className="group block focus:outline-none"
         aria-label={headline.title}
       >
-        <div className="glass-card glass-card-hover relative overflow-hidden p-5 sm:p-6">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute right-0 top-0 h-full w-32 opacity-[0.10]"
-            style={{
-              background: `radial-gradient(ellipse at right top, ${headline.color} 0%, transparent 70%)`,
-            }}
-          />
+        <div className="monolith-plate monolith-plate-hover thud-in thud-in-2 overflow-hidden p-5 sm:p-6">
           <div className="flex items-start gap-4">
             <span
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-xl text-lg transition group-hover:scale-105"
-              style={{ background: headline.bg, color: headline.color }}
+              className="grid h-11 w-11 shrink-0 place-items-center text-lg transition group-hover:scale-105"
+              style={{
+                background: headline.bg,
+                color: headline.color,
+                clipPath: "polygon(0 0, calc(100% - 0.5rem) 0, 100% 0.5rem, 100% 100%, 0 100%)",
+              }}
             >
               <headline.icon className="h-5 w-5" strokeWidth={1.8} />
             </span>
@@ -143,14 +128,14 @@ export default function DashboardPage() {
               <p className="eyebrow mb-1" style={{ color: headline.color }}>
                 {headline.overline}
               </p>
-              <h2 className="font-display text-[1.3rem] font-semibold leading-snug tracking-[-0.018em] text-[#1E293B] sm:text-[1.5rem]">
+              <h2 className="font-display text-[1.3rem] font-semibold leading-snug tracking-[-0.018em] text-[#0d1f3c] sm:text-[1.5rem]">
                 {headline.title}
               </h2>
               <p className="mt-1.5 text-[0.875rem] text-muted-foreground">
                 {headline.body}
               </p>
             </div>
-            <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground/40 transition group-hover:translate-x-1 group-hover:text-[#1E293B]" />
+            <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-[#0d1f3c]/30 transition group-hover:translate-x-1 group-hover:text-[#0d1f3c]" />
           </div>
         </div>
       </Link>
@@ -166,9 +151,9 @@ export default function DashboardPage() {
               className="group block focus:outline-none"
               aria-label={f.title}
             >
-              <div className="glass-card glass-card-hover h-full p-4">
+              <div className="monolith-plate monolith-plate-hover h-full p-4">
                 <span
-                  className="mb-3 grid h-9 w-9 place-items-center rounded-lg transition group-hover:scale-105"
+                  className="mb-3 grid h-9 w-9 place-items-center transition group-hover:scale-105"
                   style={{ background: f.bg, color: f.color }}
                 >
                   <Icon className="h-4 w-4" strokeWidth={1.8} />
@@ -176,7 +161,7 @@ export default function DashboardPage() {
                 <p className="font-sans text-[0.6rem] font-semibold uppercase tracking-wide mb-0.5" style={{ color: f.color }}>
                   {f.overline}
                 </p>
-                <h3 className="font-display text-[1rem] font-semibold leading-tight tracking-[-0.014em] text-[#1E293B]">
+                <h3 className="font-display text-[1rem] font-semibold leading-tight tracking-[-0.014em] text-[#0d1f3c]">
                   {f.title}
                 </h3>
                 <p className="mt-1 text-[0.8rem] leading-snug text-muted-foreground">

@@ -23,14 +23,9 @@ export default function SnapshotPage() {
         <ChevronLeft className="h-4 w-4" /> Today
       </Link>
 
-      <header className="relative space-y-2">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-4 right-0 h-32 w-48 rounded-full opacity-20 blur-3xl"
-          style={{ background: "radial-gradient(ellipse, var(--aurora-1) 0%, transparent 70%)" }}
-        />
+      <header className="topo-bg relative space-y-2">
         <p className="eyebrow relative">Mental Health · Reflection</p>
-        <h1 className="relative font-display text-[1.875rem] font-semibold leading-tight tracking-[-0.025em] text-white sm:text-[2.25rem]">
+        <h1 className="heading-engraved relative font-display text-[1.875rem] font-semibold leading-tight tracking-[-0.025em] text-[#0d1f3c] sm:text-[2.25rem]">
           A short, faith-aware{" "}
           <span className="italic font-medium">check-in.</span>
         </h1>

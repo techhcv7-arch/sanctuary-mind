@@ -24,14 +24,9 @@ export default function PastorListPage() {
         <ChevronLeft className="h-4 w-4" /> Today
       </Link>
 
-      <header className="relative space-y-2">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-4 right-0 h-32 w-48 rounded-full opacity-30 blur-3xl"
-          style={{ background: "radial-gradient(ellipse, var(--aurora-1) 0%, transparent 70%)" }}
-        />
+      <header className="topo-bg relative space-y-2">
         <p className="eyebrow relative">Pastoral Care</p>
-        <h1 className="relative font-display text-[1.875rem] font-semibold leading-tight tracking-[-0.025em] text-[#1E293B] sm:text-[2.25rem]">
+        <h1 className="heading-engraved relative font-display text-[1.875rem] font-semibold leading-tight tracking-[-0.025em] text-[#0d1f3c] sm:text-[2.25rem]">
           Talk with a <span className="italic font-medium">pastor.</span>
         </h1>
         <p className="relative max-w-prose text-[0.9rem] text-muted-foreground">
@@ -41,7 +36,7 @@ export default function PastorListPage() {
       </header>
 
       {/* Privacy notice */}
-      <div className="flex items-center gap-2.5 glass-card rounded-xl px-4 py-3 text-sm text-muted-foreground">
+      <div className="monolith-surface flex items-center gap-2.5 px-4 py-3 text-sm text-muted-foreground">
         <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-600" />
         Sessions are end-to-end encrypted and not recorded by default.
       </div>
@@ -57,16 +52,20 @@ export default function PastorListPage() {
             if (!pastor) return null;
             const colors = ACCENT_COLORS[pastor.accent] ?? ACCENT_COLORS.navy;
             return (
-              <div key={b.id} className="glass-card flex items-center justify-between p-4">
+              <div key={b.id} className="monolith-plate flex items-center justify-between p-4">
                 <div className="flex items-center gap-3">
                   <span
-                    className="grid h-10 w-10 place-items-center rounded-full font-sans text-[0.7rem] font-semibold"
-                    style={{ background: colors.bg, color: colors.text }}
+                    className="grid h-10 w-10 shrink-0 place-items-center font-sans text-[0.7rem] font-semibold"
+                    style={{
+                      background: colors.bg,
+                      color: colors.text,
+                      clipPath: "polygon(0 0, calc(100% - 0.4rem) 0, 100% 0.4rem, 100% 100%, 0 100%)",
+                    }}
                   >
                     {pastor.initials}
                   </span>
                   <div>
-                    <p className="text-[0.9rem] font-semibold text-[#1E293B]">
+                    <p className="text-[0.9rem] font-semibold text-[#0d1f3c]">
                       {pastor.name}
                     </p>
                     <p className="text-[0.75rem] text-muted-foreground">
@@ -76,7 +75,7 @@ export default function PastorListPage() {
                 </div>
                 <Link
                   href={`/session/${b.id}`}
-                  className="btn-primary inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[0.8rem] font-semibold"
+                  className="btn-primary inline-flex items-center gap-1.5 px-4 py-2 text-[0.8rem] font-semibold"
                 >
                   <Video className="h-3.5 w-3.5" /> Join
                 </Link>
@@ -85,6 +84,8 @@ export default function PastorListPage() {
           })}
         </section>
       )}
+
+      {bookings.length > 0 && <hr className="fault-line my-2" aria-hidden />}
 
       {/* Pastor list */}
       <section className="space-y-3">
@@ -100,24 +101,28 @@ export default function PastorListPage() {
                 href={`/pastor/${p.id}/book`}
                 className="group block focus:outline-none"
               >
-                <div className="glass-card glass-card-hover flex items-start gap-4 p-4 sm:p-5">
+                <div className="monolith-plate monolith-plate-hover flex items-start gap-4 p-4 sm:p-5">
                   <span
-                    className="grid h-12 w-12 shrink-0 place-items-center rounded-full font-sans text-[0.8rem] font-semibold"
-                    style={{ background: colors.bg, color: colors.text }}
+                    className="grid h-12 w-12 shrink-0 place-items-center font-sans text-[0.8rem] font-semibold"
+                    style={{
+                      background: colors.bg,
+                      color: colors.text,
+                      clipPath: "polygon(0 0, calc(100% - 0.5rem) 0, 100% 0.5rem, 100% 100%, 0 100%)",
+                    }}
                   >
                     {p.initials}
                   </span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <p className="font-display text-[1.05rem] font-semibold leading-tight text-[#1E293B]">
+                        <p className="font-display text-[1.05rem] font-semibold leading-tight text-[#0d1f3c]">
                           {p.name}
                         </p>
                         <p className="text-[0.8rem] italic text-muted-foreground">
                           {p.title}
                         </p>
                       </div>
-                      <span className="mt-0.5 rounded-full border border-[#92b6f0]/40 bg-white/40 px-2.5 py-0.5 font-sans text-[0.65rem] font-medium text-muted-foreground transition group-hover:border-[#3D5A87]/40 group-hover:text-[#3D5A87]">
+                      <span className="mt-0.5 border border-[#D4AF37]/40 bg-white/20 px-2.5 py-0.5 font-sans text-[0.65rem] font-medium text-muted-foreground transition group-hover:border-[#D4AF37]/70 group-hover:text-[#0d1f3c]">
                         Book →
                       </span>
                     </div>

@@ -60,8 +60,8 @@ export default function BookPastorPage() {
       </Link>
 
       {/* Pastor card */}
-      <div className="glass-card overflow-hidden">
-        <div className="bg-[#c2d6f6] border-b border-[#92b6f0]/30 px-5 py-6 sm:px-7">
+      <div className="monolith-plate overflow-hidden">
+        <div className="bg-[#92b6f0] border-b border-white/10 px-5 py-6 sm:px-7">
           <div className="flex items-start gap-4">
             <span
               className="grid h-14 w-14 shrink-0 place-items-center rounded-full font-sans text-[0.85rem] font-semibold"
@@ -71,7 +71,7 @@ export default function BookPastorPage() {
             </span>
             <div className="flex-1 min-w-0">
               <p className="eyebrow mb-1">Booking</p>
-              <h1 className="font-display text-[1.5rem] font-semibold leading-tight tracking-[-0.022em] text-[#1E293B] sm:text-[1.75rem]">
+              <h1 className="font-display text-[1.5rem] font-semibold leading-tight tracking-[-0.022em] text-[#0d1f3c] sm:text-[1.75rem]">
                 {pastor.name}
               </h1>
               <p className="text-sm italic text-muted-foreground">{pastor.title}</p>
@@ -104,7 +104,7 @@ export default function BookPastorPage() {
                     ? "border-[#92b6f0]/15 bg-white/20 text-muted-foreground/35 cursor-not-allowed"
                     : active
                       ? "border-[#3D5A87] bg-[#3D5A87] text-white shadow-md"
-                      : "border-[#92b6f0]/35 bg-white/40 text-[#1E293B] hover:border-[#3D5A87]/50 hover:bg-white/65"
+                      : "border-[#92b6f0]/35 bg-white/40 text-[#0d1f3c] hover:border-[#3D5A87]/50 hover:bg-white/65"
                 }`}
               >
                 <span className="font-sans text-[0.6rem] font-semibold uppercase tracking-wide opacity-80">
@@ -152,7 +152,7 @@ export default function BookPastorPage() {
       </section>
 
       {/* Privacy note */}
-      <div className="flex items-center justify-between glass-card rounded-xl px-4 py-3 text-[0.82rem] text-muted-foreground">
+      <div className="flex items-center justify-between monolith-plate rounded-xl px-4 py-3 text-[0.82rem] text-muted-foreground">
         <span className="inline-flex items-center gap-2">
           <ShieldCheck className="h-4 w-4 text-emerald-600" />
           Encrypted, not recorded

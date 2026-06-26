@@ -33,7 +33,7 @@ export function CrisisBanner({
     <aside
       role="region"
       aria-label="Crisis support resources"
-      className={`overflow-hidden rounded-2xl ${
+      className={`overflow-hidden ${
         isUrgent
           ? "bg-red-600 shadow-lg shadow-red-600/25"
           : "border border-red-400/30 bg-red-50 backdrop-blur-sm"

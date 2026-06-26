@@ -23,7 +23,7 @@ function TopBarInner() {
   }
 
   return (
-    <header className="sticky top-0 z-30 border-b border-[#92b6f0]/25 bg-[#c2d6f6]/90 backdrop-blur-md">
+    <header className="sticky top-0 z-30 border-b border-white/10 bg-[#92b6f0]">
       <div className="mx-auto flex h-14 w-full max-w-3xl items-center justify-between px-5">
         <Link
           href={user ? "/dashboard" : "/"}
@@ -32,11 +32,11 @@ function TopBarInner() {
         >
           <span
             aria-hidden
-            className="grid h-7 w-7 place-items-center rounded-lg bg-[var(--brand-gold)] text-[#0D1B2A] font-display text-[0.85rem] leading-none"
+            className="grid h-7 w-7 place-items-center rounded-lg bg-[var(--brand-gold)] text-[#0d1f3c] font-display text-[0.85rem] leading-none"
           >
             ✣
           </span>
-          <span className="font-display text-[1rem] font-medium tracking-tight text-[#1E293B]">
+          <span className="heading-engraved font-display text-[1rem] font-medium tracking-tight text-[#0d1f3c]">
             SanctuaryMind
           </span>
         </Link>
@@ -45,7 +45,7 @@ function TopBarInner() {
           <div className="flex items-center gap-2.5">
             <span
               aria-hidden
-              className="grid h-8 w-8 place-items-center rounded-full bg-[#3D5A87] text-white font-sans text-[0.65rem] font-semibold tracking-wider"
+              className="grid h-8 w-8 place-items-center bg-[#0d1f3c] border border-[#D4AF37]/60 font-sans text-[0.65rem] font-semibold tracking-wider text-[#D4AF37]"
               title={user.fullName}
             >
               {initials}
@@ -54,7 +54,7 @@ function TopBarInner() {
               type="button"
               onClick={handleSignOut}
               aria-label="Sign out"
-              className="rounded-md p-1 text-[#3D5A87]/60 transition hover:bg-[#92b6f0]/20 hover:text-[#1E293B]"
+              className="p-1 text-[#0d1f3c]/60 transition hover:bg-white/10 hover:text-[#D4AF37]"
             >
               <LogOut className="h-4 w-4" />
             </button>
@@ -69,15 +69,15 @@ export function TopBar() {
   return (
     <ClientOnly
       fallback={
-        <header className="sticky top-0 z-30 border-b border-[#92b6f0]/25 bg-[#c2d6f6]/90 backdrop-blur-md">
+        <header className="sticky top-0 z-30 border-b border-white/10 bg-[#92b6f0]">
           <div className="mx-auto flex h-14 w-full max-w-3xl items-center px-5">
             <span
               aria-hidden
-              className="grid h-7 w-7 place-items-center rounded-lg bg-[var(--brand-gold)] text-[#0D1B2A] font-display text-[0.85rem] leading-none"
+              className="grid h-7 w-7 place-items-center rounded-lg bg-[var(--brand-gold)] text-[#0d1f3c] font-display text-[0.85rem] leading-none"
             >
               ✣
             </span>
-            <span className="ml-2.5 font-display text-[1rem] font-medium tracking-tight text-[#1E293B]">
+            <span className="heading-engraved ml-2.5 font-display text-[1rem] font-medium tracking-tight text-[#0d1f3c]">
               SanctuaryMind
             </span>
           </div>

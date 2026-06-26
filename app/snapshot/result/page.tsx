@@ -36,9 +36,9 @@ export default function SnapshotResultPage() {
         <ChevronLeft className="h-4 w-4" /> Today
       </Link>
 
-      <header className="space-y-3">
+      <header className="topo-bg space-y-3">
         <p className="eyebrow">Snapshot · Result</p>
-        <h1 className="font-display text-[1.875rem] font-semibold leading-tight tracking-[-0.025em] text-[#1E293B] sm:text-[2.25rem]">
+        <h1 className="heading-engraved font-display text-[1.875rem] font-semibold leading-tight tracking-[-0.025em] text-[#0d1f3c] sm:text-[2.25rem]">
           We <span className="italic font-medium">hear</span> you.
         </h1>
         <TierBadge tier={tier} />
@@ -54,7 +54,7 @@ export default function SnapshotResultPage() {
       {tier === "moderate" && <ModerateResult />}
       {tier === "high" && <HighResult />}
 
-      <div className="glass-card p-5">
+      <div className="monolith-plate p-5">
         <p className="font-sans text-[0.7rem] font-semibold uppercase tracking-wide text-muted-foreground mb-1.5">
           About this Snapshot
         </p>
@@ -124,17 +124,17 @@ function ResultCard({
 }) {
   return (
     <div
-      className="glass-card relative overflow-hidden p-5 sm:p-6"
-      style={{ borderColor: `color-mix(in oklab, ${accent} 30%, rgba(146,182,240,0.35))` }}
+      className="monolith-plate relative overflow-hidden p-5 sm:p-6"
+      style={{ borderColor: `color-mix(in oklab, ${accent} 30%, rgba(255,255,255,0.18))` }}
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-y-0 left-0 w-1 rounded-l-[var(--radius)]"
+        className="pointer-events-none absolute inset-y-0 left-0 w-1"
         style={{ background: accent }}
       />
       <div className="flex items-start gap-4 pl-3">
         <span
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-xl"
+          className="grid h-10 w-10 shrink-0 place-items-center"
           style={{
             background: `color-mix(in oklab, ${accent} 12%, transparent)`,
             color: accent,
@@ -146,7 +146,7 @@ function ResultCard({
           <p className="eyebrow mb-2" style={{ color: accent }}>
             {overline}
           </p>
-          <h2 className="font-display text-[1.2rem] font-semibold leading-snug tracking-[-0.018em] text-[#1E293B] sm:text-[1.375rem]">
+          <h2 className="font-display text-[1.2rem] font-semibold leading-snug tracking-[-0.018em] text-[#0d1f3c] sm:text-[1.375rem]">
             {title}
           </h2>
           <p className="mt-2 text-[0.875rem] leading-relaxed text-muted-foreground">
@@ -178,7 +178,7 @@ function ActionBtn({
       className={`inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-[0.875rem] font-medium transition ${
         filled
           ? "bg-red-600 border-red-600 text-white hover:opacity-90"
-          : "border-[#92b6f0]/40 bg-white/45 text-foreground hover:bg-white/65"
+          : "border-white/20 bg-[#a0bff0] text-foreground hover:bg-[#b2cbf2]"
       }`}
     >
       <span

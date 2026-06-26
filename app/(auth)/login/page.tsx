@@ -14,7 +14,7 @@ const ERROR_MESSAGES: Record<string, string> = {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="glass-card rounded-2xl p-8 animate-pulse h-96" />}>
+    <Suspense fallback={<div className="monolith-plate p-8 animate-pulse h-96" />}>
       <LoginForm />
     </Suspense>
   );
@@ -50,9 +50,9 @@ function LoginForm() {
   }
 
   return (
-    <div className="glass-card reveal-up reveal-up-1 rounded-2xl p-8">
+    <div className="monolith-plate reveal-up reveal-up-1 p-8">
       <p className="eyebrow mb-2">Welcome back</p>
-      <h1 className="font-display text-[1.6rem] font-semibold leading-tight tracking-tight text-[#1E293B] mb-6">
+      <h1 className="heading-engraved font-display text-[1.6rem] font-semibold leading-tight tracking-tight text-[#0d1f3c] mb-6">
         Sign in to your account
       </h1>
 
@@ -61,21 +61,21 @@ function LoginForm() {
         type="button"
         onClick={handleGoogleSignIn}
         disabled={isGooglePending || isPending}
-        className="mb-5 flex w-full items-center justify-center gap-3 rounded-xl border border-[#92b6f0]/40 bg-white/60 px-4 py-2.5 font-sans text-[0.88rem] font-medium text-[#1E293B] transition hover:bg-white/80 disabled:opacity-50"
+        className="mb-5 flex w-full items-center justify-center gap-3 border border-white/20 bg-white/60 px-4 py-2.5 font-sans text-[0.88rem] font-medium text-[#0d1f3c] transition hover:bg-white/80 disabled:opacity-50"
       >
         <GoogleIcon />
         {isGooglePending ? "Redirecting…" : "Continue with Google"}
       </button>
 
       <div className="relative mb-5 flex items-center gap-3">
-        <div className="h-px flex-1 bg-[#92b6f0]/30" />
-        <span className="font-sans text-[0.72rem] text-[#3D5A87]/50">or</span>
-        <div className="h-px flex-1 bg-[#92b6f0]/30" />
+        <div className="h-px flex-1 bg-white/20" />
+        <span className="font-sans text-[0.72rem] text-[#2a3f6b]/60">or</span>
+        <div className="h-px flex-1 bg-white/20" />
       </div>
 
       <form onSubmit={handleEmailSignIn} className="space-y-4">
         <div className="space-y-1.5">
-          <label htmlFor="email" className="block font-sans text-[0.78rem] font-medium text-[#3D5A87]">
+          <label htmlFor="email" className="block font-sans text-[0.78rem] font-medium text-[#2a3f6b]">
             Email address
           </label>
           <input
@@ -92,12 +92,12 @@ function LoginForm() {
 
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label htmlFor="password" className="block font-sans text-[0.78rem] font-medium text-[#3D5A87]">
+            <label htmlFor="password" className="block font-sans text-[0.78rem] font-medium text-[#2a3f6b]">
               Password
             </label>
             <Link
               href="/forgot-password"
-              className="font-sans text-[0.74rem] text-[#3D5A87]/70 hover:text-[#3D5A87] transition"
+              className="font-sans text-[0.74rem] text-[#2a3f6b]/70 hover:text-[#0d1f3c] transition"
             >
               Forgot password?
             </Link>
@@ -116,7 +116,7 @@ function LoginForm() {
             <button
               type="button"
               onClick={() => setShowPassword((s) => !s)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#3D5A87]/50 hover:text-[#3D5A87]"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#2a3f6b]/50 hover:text-[#0d1f3c]"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -125,7 +125,7 @@ function LoginForm() {
         </div>
 
         {error && (
-          <p className="rounded-lg bg-[#DC2626]/10 px-3 py-2 font-sans text-[0.78rem] text-[#DC2626]">
+          <p className="bg-[#DC2626]/10 px-3 py-2 font-sans text-[0.78rem] text-[#DC2626]">
             {error}
           </p>
         )}
@@ -139,9 +139,9 @@ function LoginForm() {
         </button>
       </form>
 
-      <p className="mt-5 text-center font-sans text-[0.8rem] text-[#3D5A87]/70">
+      <p className="mt-5 text-center font-sans text-[0.8rem] text-[#2a3f6b]/70">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="font-semibold text-[#3D5A87] hover:underline">
+        <Link href="/signup" className="font-semibold text-[#0d1f3c] hover:underline">
           Get started
         </Link>
       </p>

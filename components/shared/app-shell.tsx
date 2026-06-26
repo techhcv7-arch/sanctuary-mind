@@ -76,7 +76,7 @@ function AuthGate({ children }: { children: ReactNode }) {
 
   if (!hydrated) {
     return (
-      <div className="flex min-h-screen items-center justify-center text-muted-foreground">
+      <div className="flex min-h-screen items-center justify-center text-[#0d1f3c]/60">
         Loading…
       </div>
     );
@@ -84,7 +84,7 @@ function AuthGate({ children }: { children: ReactNode }) {
 
   if (!user) {
     return (
-      <div className="flex min-h-screen items-center justify-center text-muted-foreground">
+      <div className="flex min-h-screen items-center justify-center text-[#0d1f3c]/60">
         Loading…
       </div>
     );
@@ -97,7 +97,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <ClientOnly
       fallback={
-        <div className="flex min-h-screen items-center justify-center text-muted-foreground">
+        <div className="flex min-h-screen items-center justify-center text-[#0d1f3c]/60">
           Loading…
         </div>
       }
