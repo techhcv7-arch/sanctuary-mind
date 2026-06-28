@@ -1,19 +1,25 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, type ComponentType, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  HandHeart,
   BookOpenText,
   CalendarClock,
-  Phone,
-  ShieldCheck,
   ChevronLeft,
+  HandHeart,
+  MessageSquareText,
+  Phone,
   RotateCcw,
+  ShieldCheck,
 } from "lucide-react";
 import { CrisisBanner } from "@/components/shared/crisis-banner";
+import {
+  SNAPSHOT_ARCHETYPE_NOTES,
+  SNAPSHOT_TIER_COPY,
+} from "@/lib/scoring/snapshot";
 import { useAppStore } from "@/lib/store/app-store";
+import type { RiskTier, SnapshotArchetype } from "@/lib/types";
 
 export default function SnapshotResultPage() {
   const router = useRouter();
@@ -25,7 +31,8 @@ export default function SnapshotResultPage() {
   }, [hydrated, result, router]);
 
   if (!hydrated || !result) return null;
-  const tier = result.tier;
+
+  const routeCopy = SNAPSHOT_TIER_COPY[result.tier];
 
   return (
     <div className="space-y-6">
@@ -39,33 +46,57 @@ export default function SnapshotResultPage() {
       <header className="topo-bg space-y-3">
         <p className="eyebrow">Snapshot · Result</p>
         <h1 className="heading-engraved font-display text-[1.875rem] font-semibold leading-tight tracking-[-0.025em] text-[#0d1f3c] sm:text-[2.25rem]">
-          We <span className="italic font-medium">hear</span> you.
+          Your next care path is{" "}
+          <span className="italic font-medium">clearer now.</span>
         </h1>
-        <TierBadge tier={tier} />
+        <TierBadge tier={result.tier} crisisOverride={result.crisisOverride} />
         <p className="max-w-prose text-[0.9rem] text-muted-foreground">
-          Thank you for taking a moment to check in. Here is the care path
-          we&rsquo;d gently recommend.
+          {result.crisisOverride
+            ? "A crisis indicator was detected, so we are showing the urgent support route regardless of total score."
+            : routeCopy.message}
         </p>
       </header>
 
-      {tier === "high" && <CrisisBanner variant="urgent" />}
+      {result.crisisOverride && <CrisisBanner variant="urgent" />}
 
-      {tier === "low" && <LowResult />}
-      {tier === "moderate" && <ModerateResult />}
-      {tier === "high" && <HighResult />}
+      {result.crisisOverride ? <CrisisResult /> : <RouteResult tier={result.tier} />}
+
+      {(result.primaryArchetype || result.secondaryArchetype) && (
+        <ArchetypeCard
+          primary={result.primaryArchetype}
+          secondary={result.secondaryArchetype}
+        />
+      )}
 
       <div className="monolith-plate p-5">
-        <p className="font-sans text-[0.7rem] font-semibold uppercase tracking-wide text-muted-foreground mb-1.5">
-          About this Snapshot
+        <p className="mb-1.5 font-sans text-[0.7rem] font-semibold uppercase tracking-wide text-muted-foreground">
+          About this assessment
         </p>
         <p className="text-[0.875rem] leading-relaxed text-muted-foreground">
-          The Snapshot is a faith-aware reflection inspired by validated
-          screening tools — not a clinical diagnosis. Your decision tree was
-          reviewed by your church&rsquo;s clinical advisor.
+          This check-in combines the documented screening questions with a short
+          spiritual-pattern layer. The care route uses the screening score plus
+          crisis-override rules. It is not a diagnosis.
         </p>
-        <p className="mt-3 font-sans text-[0.75rem] font-semibold text-muted-foreground/60">
-          Reflection score · {result.total} / 30
-        </p>
+        <div className="mt-4 grid gap-px bg-[rgba(58,58,56,0.2)] sm:grid-cols-3">
+          <div className="bg-[#f7f7f5] px-4 py-4">
+            <p className="eyebrow">Screening score</p>
+            <p className="mt-2 text-xl font-semibold tracking-[-0.04em] text-[#18386e]">
+              {result.total} / 100
+            </p>
+          </div>
+          <div className="bg-[#f7f7f5] px-4 py-4">
+            <p className="eyebrow">Raw response total</p>
+            <p className="mt-2 text-xl font-semibold tracking-[-0.04em] text-[#18386e]">
+              {result.rawTotal}
+            </p>
+          </div>
+          <div className="bg-[#f7f7f5] px-4 py-4">
+            <p className="eyebrow">Route status</p>
+            <p className="mt-2 text-xl font-semibold tracking-[-0.04em] text-[#18386e]">
+              {result.crisisOverride ? "Crisis escalation override" : routeCopy.status}
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="flex items-center justify-between pt-2">
@@ -86,23 +117,36 @@ export default function SnapshotResultPage() {
   );
 }
 
-function TierBadge({ tier }: { tier: "low" | "moderate" | "high" }) {
-  const styles = {
-    low:      "bg-emerald-600/12 text-emerald-700 border-emerald-600/30",
-    moderate: "bg-amber-500/12 text-amber-700 border-amber-500/30",
-    high:     "bg-red-600/12 text-red-600 border-red-500/30",
-  } as const;
-  const label = {
-    low: "Low priority",
-    moderate: "Moderate priority",
-    high: "High priority",
-  } as const;
+function TierBadge({
+  tier,
+  crisisOverride,
+}: {
+  tier: RiskTier;
+  crisisOverride: boolean;
+}) {
+  if (crisisOverride) {
+    return (
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-red-500/30 bg-red-600/12 px-3 py-1 font-sans text-[0.7rem] font-semibold uppercase tracking-wide text-red-600">
+        <span className="h-1.5 w-1.5 rounded-full bg-current" />
+        Crisis support route
+      </span>
+    );
+  }
+
+  const styles: Record<RiskTier, string> = {
+    wellness: "border-emerald-600/30 bg-emerald-600/12 text-emerald-700",
+    prayer: "border-sky-600/30 bg-sky-600/12 text-sky-700",
+    pastoral: "border-amber-500/30 bg-amber-500/12 text-amber-700",
+    specialist: "border-orange-500/30 bg-orange-500/12 text-orange-700",
+    clinical: "border-red-500/30 bg-red-600/12 text-red-600",
+  };
+
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-sans text-[0.7rem] font-semibold uppercase tracking-wide ${styles[tier]}`}
     >
       <span className="h-1.5 w-1.5 rounded-full bg-current" />
-      {label[tier]}
+      {SNAPSHOT_TIER_COPY[tier].label}
     </span>
   );
 }
@@ -116,11 +160,11 @@ function ResultCard({
   children,
 }: {
   accent: string;
-  Icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  Icon: ComponentType<{ className?: string; strokeWidth?: number }>;
   overline: string;
   title: string;
   body: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <div
@@ -142,7 +186,7 @@ function ResultCard({
         >
           <Icon className="h-5 w-5" strokeWidth={1.7} />
         </span>
-        <div className="flex-1 min-w-0">
+        <div className="min-w-0 flex-1">
           <p className="eyebrow mb-2" style={{ color: accent }}>
             {overline}
           </p>
@@ -167,7 +211,7 @@ function ActionBtn({
   filled,
 }: {
   href: string;
-  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  icon: ComponentType<{ className?: string; strokeWidth?: number }>;
   label: string;
   color?: string;
   filled?: boolean;
@@ -177,14 +221,11 @@ function ActionBtn({
       href={href}
       className={`inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-[0.875rem] font-medium transition ${
         filled
-          ? "bg-red-600 border-red-600 text-white hover:opacity-90"
+          ? "border-[#18386e] bg-[#18386e] text-white hover:opacity-90"
           : "border-white/20 bg-[#a0bff0] text-foreground hover:bg-[#b2cbf2]"
       }`}
     >
-      <span
-        className="shrink-0"
-        style={!filled && color ? { color } : undefined}
-      >
+      <span className="shrink-0" style={!filled && color ? { color } : undefined}>
         <Icon className="h-4 w-4" strokeWidth={1.7} />
       </span>
       {label}
@@ -192,64 +233,141 @@ function ActionBtn({
   );
 }
 
-function LowResult() {
-  return (
-    <ResultCard
-      accent="#059669"
-      Icon={HandHeart}
-      overline="Low priority"
-      title="Lean into prayer and community"
-      body="Your reflection points to a steady season. Stay rooted with your congregation, daily Scripture, and a regular pastoral check-in."
-    >
-      <div className="grid gap-2 sm:grid-cols-2">
-        <ActionBtn href="/prayer" icon={HandHeart} label="Join live prayer" color="#059669" />
-        <ActionBtn href="/bible" icon={BookOpenText} label="Bible Personality" color="#059669" />
-      </div>
-    </ResultCard>
-  );
+function RouteResult({ tier }: { tier: RiskTier }) {
+  switch (tier) {
+    case "wellness":
+      return (
+        <ResultCard
+          accent="#059669"
+          Icon={BookOpenText}
+          overline="Level 1 · Wellness Resources"
+          title="Stay rooted in steady wellness rhythms"
+          body="Your score falls in the low-concern band. This route emphasizes devotional support, self-guided prayer, and ongoing spiritual growth resources."
+        >
+          <div className="grid gap-2 sm:grid-cols-2">
+            <ActionBtn href="/bible" icon={BookOpenText} label="Bible personality" color="#059669" />
+            <ActionBtn href="/prayer" icon={HandHeart} label="Self-guided prayer" color="#059669" />
+          </div>
+        </ResultCard>
+      );
+    case "prayer":
+      return (
+        <ResultCard
+          accent="#0284C7"
+          Icon={HandHeart}
+          overline="Level 2 · Prayer Support"
+          title="Lean into prayer and community support"
+          body="Your score points to mild emotional strain. The most appropriate next step is faith-based encouragement, prayer support, and community reinforcement."
+        >
+          <div className="grid gap-2 sm:grid-cols-2">
+            <ActionBtn href="/prayer" icon={HandHeart} label="Open prayer support" color="#0284C7" />
+            <ActionBtn href="/chat" icon={MessageSquareText} label="Daily encouragement" color="#0284C7" />
+          </div>
+        </ResultCard>
+      );
+    case "pastoral":
+      return (
+        <ResultCard
+          accent="#D97706"
+          Icon={CalendarClock}
+          overline="Level 3 · Pastoral Care"
+          title="A trusted pastor is the right next step"
+          body="Your responses indicate moderate emotional distress. This route prioritizes a pastor video call, church counseling support, and prayer-team follow-up."
+        >
+          <div className="grid gap-2 sm:grid-cols-2">
+            <ActionBtn href="/pastor" icon={CalendarClock} label="Schedule pastor care" color="#D97706" />
+            <ActionBtn href="/prayer" icon={HandHeart} label="Prayer team follow-up" color="#D97706" />
+          </div>
+        </ResultCard>
+      );
+    case "specialist":
+      return (
+        <ResultCard
+          accent="#EA580C"
+          Icon={ShieldCheck}
+          overline="Level 4 · Christian Mental Health Specialist"
+          title="A faith-aligned licensed specialist is recommended"
+          body="Your score reflects elevated emotional distress. This route points toward a Christian psychologist or counselor, while keeping pastoral support active around the referral."
+        >
+          <div className="grid gap-2 sm:grid-cols-2">
+            <ActionBtn href="/pastor" icon={CalendarClock} label="Start pastoral handoff" color="#EA580C" />
+            <ActionBtn href="/chat" icon={MessageSquareText} label="Talk it through now" color="#EA580C" />
+          </div>
+          <p className="mt-3 text-[0.78rem] italic text-muted-foreground/70">
+            In the live build, a vetted Christian provider list would appear here.
+          </p>
+        </ResultCard>
+      );
+    case "clinical":
+      return (
+        <ResultCard
+          accent="#DC2626"
+          Icon={ShieldCheck}
+          overline="Level 5 · Clinical Mental Health Evaluation"
+          title="Professional clinical support is strongly recommended"
+          body="Your score falls in the highest non-crisis route. This path is designed to move you toward a clinical mental health evaluation, licensed provider referral, and an ongoing support plan."
+        >
+          <div className="grid gap-2 sm:grid-cols-2">
+            <ActionBtn href="/pastor" icon={CalendarClock} label="Request support planning" color="#DC2626" />
+            <ActionBtn href="/chat" icon={MessageSquareText} label="Stay connected now" color="#DC2626" />
+          </div>
+          <p className="mt-3 text-[0.78rem] italic text-muted-foreground/70">
+            This route is not the same as crisis escalation, but it does call for prompt clinical follow-through.
+          </p>
+        </ResultCard>
+      );
+  }
 }
 
-function ModerateResult() {
-  return (
-    <ResultCard
-      accent="#D97706"
-      Icon={CalendarClock}
-      overline="Moderate priority"
-      title="A warm referral to a Christian psychologist"
-      body="Your reflection suggests a heavier season. We'd love to connect you with a faith-aligned licensed psychologist — and a pastoral consultation alongside it."
-    >
-      <div className="grid gap-2 sm:grid-cols-2">
-        <ActionBtn href="/pastor" icon={CalendarClock} label="Schedule a pastor" color="#D97706" />
-        <ActionBtn href="/chat" icon={BookOpenText} label="Talk it through" color="#D97706" />
-      </div>
-      <p className="mt-3 text-[0.78rem] italic text-muted-foreground/70">
-        In the live build, a licensed-provider list appears here, filtered to your church&rsquo;s vetted network.
-      </p>
-    </ResultCard>
-  );
-}
-
-function HighResult() {
+function CrisisResult() {
   return (
     <ResultCard
       accent="#DC2626"
       Icon={ShieldCheck}
-      overline="High priority"
+      overline="Crisis escalation override"
       title="Please reach out for immediate support"
-      body="Your reflection includes signs we take seriously. The 988 Lifeline is free, confidential, and available 24/7."
+      body="A critical risk response was detected. The next step is immediate support through 988, emergency resources, and a pastor contact option."
     >
       <div className="grid gap-2 sm:grid-cols-2">
         <a
           href="tel:988"
-          className="inline-flex items-center gap-2 rounded-xl border border-red-600 bg-red-600 px-4 py-3 text-[0.875rem] font-semibold text-white hover:opacity-90 transition"
+          className="inline-flex items-center gap-2 rounded-xl border border-red-600 bg-red-600 px-4 py-3 text-[0.875rem] font-semibold text-white transition hover:opacity-90"
         >
           <Phone className="h-4 w-4" /> Call 988 now
         </a>
         <ActionBtn href="/pastor" icon={CalendarClock} label="Talk to your pastor" color="#DC2626" />
       </div>
       <p className="mt-3 text-[0.78rem] italic text-muted-foreground/70">
-        A staff member from your church will be notified that you&rsquo;d like support, with your permission.
+        If you are in immediate danger, call emergency services now.
       </p>
     </ResultCard>
+  );
+}
+
+function ArchetypeCard({
+  primary,
+  secondary,
+}: {
+  primary: SnapshotArchetype | null;
+  secondary: SnapshotArchetype | null;
+}) {
+  if (!primary) return null;
+
+  return (
+    <div className="monolith-plate p-5 sm:p-6">
+      <p className="eyebrow mb-2">Spiritual pattern layer</p>
+      <h2 className="font-display text-[1.2rem] font-semibold tracking-[-0.02em] text-[#0d1f3c] sm:text-[1.35rem]">
+        Your responses most resemble {primary}
+        {secondary ? `, with ${secondary} close behind.` : "."}
+      </h2>
+      <p className="mt-3 text-[0.875rem] leading-relaxed text-muted-foreground">
+        {SNAPSHOT_ARCHETYPE_NOTES[primary]}
+      </p>
+      {secondary && (
+        <p className="mt-2 text-[0.82rem] leading-6 text-muted-foreground/80">
+          Secondary pattern: {secondary}. {SNAPSHOT_ARCHETYPE_NOTES[secondary]}
+        </p>
+      )}
+    </div>
   );
 }

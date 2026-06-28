@@ -50,18 +50,30 @@ function LoginForm() {
   }
 
   return (
-    <div className="monolith-plate reveal-up reveal-up-1 p-8">
-      <p className="eyebrow mb-2">Welcome back</p>
-      <h1 className="heading-engraved font-display text-[1.6rem] font-semibold leading-tight tracking-tight text-[#0d1f3c] mb-6">
-        Sign in to your account
-      </h1>
+    <div className="monolith-plate reveal-up reveal-up-1 p-6 sm:p-8">
+      <div className="mb-6 flex items-start justify-between gap-4">
+        <div>
+          <p className="eyebrow mb-2">Welcome back</p>
+          <h1 className="heading-engraved font-display text-[1.7rem] font-semibold leading-tight tracking-tight text-[#13233f]">
+            Sign in to your account
+          </h1>
+          <p className="mt-3 max-w-sm text-sm leading-6 text-[#4b628d]">
+            Access your dashboard, private conversations, prayer spaces, and pastoral care schedule.
+          </p>
+        </div>
+        <div className="hidden rounded-[1.2rem] bg-[#13233f] px-3 py-2 text-right text-[#dfe9fb] sm:block">
+          <p className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-white/58">
+            Member care
+          </p>
+          <p className="mt-1 text-sm font-medium text-white">Secure sign-in</p>
+        </div>
+      </div>
 
-      {/* Google OAuth */}
       <button
         type="button"
         onClick={handleGoogleSignIn}
         disabled={isGooglePending || isPending}
-        className="mb-5 flex w-full items-center justify-center gap-3 border border-white/20 bg-white/60 px-4 py-2.5 font-sans text-[0.88rem] font-medium text-[#0d1f3c] transition hover:bg-white/80 disabled:opacity-50"
+        className="mb-5 flex w-full items-center justify-center gap-3 rounded-[1.1rem] border border-white/70 bg-white/74 px-4 py-3 font-sans text-[0.9rem] font-medium text-[#13233f] transition hover:bg-white/88 disabled:opacity-50"
       >
         <GoogleIcon />
         {isGooglePending ? "Redirecting…" : "Continue with Google"}
@@ -69,13 +81,13 @@ function LoginForm() {
 
       <div className="relative mb-5 flex items-center gap-3">
         <div className="h-px flex-1 bg-white/20" />
-        <span className="font-sans text-[0.72rem] text-[#2a3f6b]/60">or</span>
+        <span className="font-sans text-[0.72rem] text-[#4b628d]/70">or</span>
         <div className="h-px flex-1 bg-white/20" />
       </div>
 
       <form onSubmit={handleEmailSignIn} className="space-y-4">
         <div className="space-y-1.5">
-          <label htmlFor="email" className="block font-sans text-[0.78rem] font-medium text-[#2a3f6b]">
+          <label htmlFor="email" className="block font-sans text-[0.78rem] font-medium text-[#4b628d]">
             Email address
           </label>
           <input
@@ -92,12 +104,12 @@ function LoginForm() {
 
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label htmlFor="password" className="block font-sans text-[0.78rem] font-medium text-[#2a3f6b]">
+            <label htmlFor="password" className="block font-sans text-[0.78rem] font-medium text-[#4b628d]">
               Password
             </label>
             <Link
               href="/forgot-password"
-              className="font-sans text-[0.74rem] text-[#2a3f6b]/70 hover:text-[#0d1f3c] transition"
+              className="font-sans text-[0.74rem] text-[#4b628d] transition hover:text-[#13233f]"
             >
               Forgot password?
             </Link>
@@ -116,7 +128,7 @@ function LoginForm() {
             <button
               type="button"
               onClick={() => setShowPassword((s) => !s)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#2a3f6b]/50 hover:text-[#0d1f3c]"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b628d]/60 hover:text-[#13233f]"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -125,7 +137,7 @@ function LoginForm() {
         </div>
 
         {error && (
-          <p className="bg-[#DC2626]/10 px-3 py-2 font-sans text-[0.78rem] text-[#DC2626]">
+          <p className="rounded-[1rem] bg-[#DC2626]/10 px-3 py-2 font-sans text-[0.78rem] text-[#DC2626]">
             {error}
           </p>
         )}
@@ -139,9 +151,15 @@ function LoginForm() {
         </button>
       </form>
 
-      <p className="mt-5 text-center font-sans text-[0.8rem] text-[#2a3f6b]/70">
+      <div className="mt-6 rounded-[1.2rem] border border-white/56 bg-white/38 px-4 py-4">
+        <p className="text-sm leading-6 text-[#4b628d]">
+          New to SanctuaryMind? Create an account to access guided check-ins, live prayer, and confidential pastoral support.
+        </p>
+      </div>
+
+      <p className="mt-5 text-center font-sans text-[0.8rem] text-[#4b628d]">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="font-semibold text-[#0d1f3c] hover:underline">
+        <Link href="/signup" className="font-semibold text-[#13233f] hover:underline">
           Get started
         </Link>
       </p>

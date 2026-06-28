@@ -1,14 +1,43 @@
-export type RiskTier = "low" | "moderate" | "high";
+export type RiskTier =
+  | "wellness"
+  | "prayer"
+  | "pastoral"
+  | "specialist"
+  | "clinical";
+
+export type SnapshotArchetype =
+  | "David"
+  | "Elijah"
+  | "Job"
+  | "Jonah"
+  | "Martha"
+  | "Moses"
+  | "Paul"
+  | "Peter"
+  | "Saul";
+
+export interface SnapshotOption {
+  label: string;
+  points?: 1 | 2 | 3 | 4 | 5;
+  archetype?: SnapshotArchetype;
+}
 
 export interface SnapshotQuestion {
   id: string;
   text: string;
-  options: { label: string; points: 0 | 1 | 2 | 3 }[];
+  kind: "screening" | "archetype";
+  options: SnapshotOption[];
+  note?: string;
+  critical?: boolean;
 }
 
 export interface SnapshotResult {
+  rawTotal: number;
   total: number;
   tier: RiskTier;
+  crisisOverride: boolean;
+  primaryArchetype: SnapshotArchetype | null;
+  secondaryArchetype: SnapshotArchetype | null;
   takenAt: string;
 }
 

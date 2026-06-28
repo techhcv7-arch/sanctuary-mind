@@ -1,25 +1,22 @@
 import type { Metadata } from "next";
-import { Cinzel, Source_Serif_4, Manrope } from "next/font/google";
+import { JetBrains_Mono, Manrope, Space_Grotesk } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
-// Display — Cinzel. Classical Roman inscriptions, engraved stone character.
-const cinzel = Cinzel({
+const spaceGrotesk = Space_Grotesk({
   variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
 });
 
-// Body — Source Serif 4. Calm, readable, faith-publication-feel.
-const serif = Source_Serif_4({
-  variable: "--font-serif",
+const manrope = Manrope({
+  variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
 });
 
-// Utility — Manrope. Geometric, low-key, doesn't compete with the serifs.
-const manrope = Manrope({
-  variable: "--font-sans",
+const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
   display: "swap",
 });
@@ -38,7 +35,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cinzel.variable} ${serif.variable} ${manrope.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} ${manrope.variable} ${jetBrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}

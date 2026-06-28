@@ -28,8 +28,8 @@ export function SnapshotWizard() {
 
   const finish = () => {
     setFreeText(draftText);
-    const { total: t, tier } = scoreSnapshot(storedAnswers, draftText);
-    setResult({ total: t, tier, takenAt: new Date().toISOString() });
+    const result = scoreSnapshot(storedAnswers, draftText);
+    setResult({ ...result, takenAt: new Date().toISOString() });
     router.push("/snapshot/result");
   };
 
@@ -59,15 +59,22 @@ export function SnapshotWizard() {
       <div className="monolith-plate thud-in px-5 py-6 sm:px-7 sm:py-8">
         {!isFinalStep ? (
           <div>
-            <p className="eyebrow mb-3">Snapshot</p>
+            <p className="eyebrow mb-3">
+              {question.kind === "screening" ? "Clinical screening" : "Spiritual pattern"}
+            </p>
             <h2 className="font-display text-[1.3rem] font-semibold leading-snug tracking-[-0.018em] text-[#0d1f3c] sm:text-[1.5rem]">
               {question.text}
             </h2>
+            {question.note && (
+              <p className="mt-2 max-w-2xl text-[0.84rem] leading-6 text-muted-foreground">
+                {question.note}
+              </p>
+            )}
 
             <fieldset className="mt-5 space-y-2">
               <legend className="sr-only">Answer options</legend>
               {question.options.map((opt, idx) => {
-                const selected = currentAnswer === opt.points;
+                const selected = currentAnswer === idx;
                 return (
                   <label
                     key={idx}
@@ -80,9 +87,9 @@ export function SnapshotWizard() {
                     <input
                       type="radio"
                       name={`q-${question.id}`}
-                      value={opt.points}
+                      value={idx}
                       checked={selected}
-                      onChange={() => setAnswer(step, opt.points)}
+                      onChange={() => setAnswer(step, idx)}
                       className="sr-only"
                     />
                     <span

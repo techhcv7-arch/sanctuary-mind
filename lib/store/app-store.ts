@@ -135,9 +135,9 @@ export const useAppStore = create<AppState>()(
       resetChat: () => set({ chat: [] }),
     }),
     {
-      name: "sanctuarymind-store-v2",
+      name: "sanctuarymind-store-v3",
       storage: createJSONStorage(() => localStorage),
-      version: 2,
+      version: 3,
       migrate: () => ({
         hydrated: false,
         user: null,

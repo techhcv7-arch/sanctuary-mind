@@ -97,19 +97,21 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <ClientOnly
       fallback={
-        <div className="flex min-h-screen items-center justify-center text-[#0d1f3c]/60">
+        <div className="flex min-h-screen items-center justify-center text-[#18386e]/60">
           Loading…
         </div>
       }
     >
       <AuthGate>
-        <div className="flex min-h-screen flex-col">
+        <div className="relative flex min-h-screen flex-col overflow-x-clip">
           <TopBar />
-          <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-6 pb-24">
+          <main className="mx-auto w-full max-w-7xl flex-1 px-4 pb-28 pt-6 sm:px-6 lg:px-8 lg:pt-10">
             {children}
           </main>
-          <div className="fixed inset-x-0 bottom-0 z-30">
-            <BottomNav />
+          <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 px-4 pb-[max(env(safe-area-inset-bottom),0.75rem)] sm:px-6 lg:hidden">
+            <div className="pointer-events-auto mx-auto max-w-7xl">
+              <BottomNav />
+            </div>
           </div>
         </div>
       </AuthGate>

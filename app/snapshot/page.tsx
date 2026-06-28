@@ -30,8 +30,8 @@ export default function SnapshotPage() {
           <span className="italic font-medium">check-in.</span>
         </h1>
         <p className="relative max-w-prose text-[0.9rem] text-muted-foreground">
-          Ten questions. No right answers — your responses help us route you to
-          the right kind of support.
+          A structured screening plus a short spiritual-pattern reflection. Your
+          responses help us route you toward the right kind of care.
         </p>
       </header>
 
