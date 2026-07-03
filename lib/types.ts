@@ -92,9 +92,12 @@ export interface Pastor {
 export interface Booking {
   id: string;
   pastorId: string;
-  dayOffset: number;
+  scheduledFor: string;
   slot: string;
   confirmedAt: string;
+  status: "scheduled" | "completed" | "cancelled";
+  completedAt?: string | null;
+  cancelledAt?: string | null;
 }
 
 export interface PrayerAlert {

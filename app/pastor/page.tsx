@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ChevronLeft, Video, ShieldCheck } from "lucide-react";
 import { PASTORS } from "@/lib/mock/pastors";
 import { useAppStore } from "@/lib/store/app-store";
+import { formatSlot, fullDateLabelFromISO } from "@/lib/utils/dates";
 
 const ACCENT_COLORS: Record<string, { bg: string; text: string }> = {
   navy:  { bg: "rgba(61,90,135,0.15)",   text: "#3D5A87" },
@@ -14,6 +15,8 @@ const ACCENT_COLORS: Record<string, { bg: string; text: string }> = {
 
 export default function PastorListPage() {
   const bookings = useAppStore((s) => s.bookings);
+  const upcomingBookings = bookings.filter((b) => b.status === "scheduled");
+  const pastBookings = bookings.filter((b) => b.status !== "scheduled");
 
   return (
     <div className="space-y-6">
@@ -42,12 +45,12 @@ export default function PastorListPage() {
       </div>
 
       {/* Upcoming bookings */}
-      {bookings.length > 0 && (
+      {upcomingBookings.length > 0 && (
         <section className="space-y-3">
           <p className="font-sans text-[0.7rem] font-semibold uppercase tracking-wide text-muted-foreground">
             Upcoming
           </p>
-          {bookings.map((b) => {
+          {upcomingBookings.map((b) => {
             const pastor = PASTORS.find((p) => p.id === b.pastorId);
             if (!pastor) return null;
             const colors = ACCENT_COLORS[pastor.accent] ?? ACCENT_COLORS.navy;
@@ -69,7 +72,7 @@ export default function PastorListPage() {
                       {pastor.name}
                     </p>
                     <p className="text-[0.75rem] text-muted-foreground">
-                      Booked · ready when you are
+                      {fullDateLabelFromISO(b.scheduledFor)} · {formatSlot(b.slot)}
                     </p>
                   </div>
                 </div>
@@ -79,6 +82,43 @@ export default function PastorListPage() {
                 >
                   <Video className="h-3.5 w-3.5" /> Join
                 </Link>
+              </div>
+            );
+          })}
+        </section>
+      )}
+
+      {pastBookings.length > 0 && (
+        <section className="space-y-3">
+          <p className="font-sans text-[0.7rem] font-semibold uppercase tracking-wide text-muted-foreground">
+            Previous sessions
+          </p>
+          {pastBookings.map((b) => {
+            const pastor = PASTORS.find((p) => p.id === b.pastorId);
+            if (!pastor) return null;
+            const colors = ACCENT_COLORS[pastor.accent] ?? ACCENT_COLORS.navy;
+            return (
+              <div key={b.id} className="monolith-plate flex items-center justify-between p-4">
+                <div className="flex items-center gap-3">
+                  <span
+                    className="grid h-10 w-10 shrink-0 place-items-center font-sans text-[0.7rem] font-semibold"
+                    style={{
+                      background: colors.bg,
+                      color: colors.text,
+                      clipPath: "polygon(0 0, calc(100% - 0.4rem) 0, 100% 0.4rem, 100% 100%, 0 100%)",
+                    }}
+                  >
+                    {pastor.initials}
+                  </span>
+                  <div>
+                    <p className="text-[0.9rem] font-semibold text-[#0d1f3c]">
+                      {pastor.name}
+                    </p>
+                    <p className="text-[0.75rem] text-muted-foreground">
+                      {b.status === "completed" ? "Completed" : "Cancelled"} · {fullDateLabelFromISO(b.scheduledFor)} · {formatSlot(b.slot)}
+                    </p>
+                  </div>
+                </div>
               </div>
             );
           })}

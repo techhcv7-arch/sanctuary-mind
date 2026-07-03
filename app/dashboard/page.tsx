@@ -62,6 +62,7 @@ export default function DashboardPage() {
   const user = useAppStore((s) => s.user);
   const snapshot = useAppStore((s) => s.snapshot.result);
   const bookings = useAppStore((s) => s.bookings);
+  const scheduledBookings = bookings.filter((booking) => booking.status === "scheduled");
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
@@ -109,7 +110,7 @@ export default function DashboardPage() {
             <div className="bg-[#f7f7f5] px-4 py-4">
               <p className="eyebrow">Pastor sessions</p>
               <p className="mt-2 text-xl font-semibold tracking-[-0.04em] text-[#18386e]">
-                {bookings.length ? `${bookings.length} booked` : "Open schedule"}
+                {scheduledBookings.length ? `${scheduledBookings.length} booked` : "Open schedule"}
               </p>
               <p className="mt-2 font-mono text-[0.68rem] uppercase tracking-[0.12em] leading-6 text-[#5d6f8d]">
                 Human support stays one step away

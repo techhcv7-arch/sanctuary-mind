@@ -7,6 +7,7 @@ import { BottomNav } from "./bottom-nav";
 import { useAppStore } from "@/lib/store/app-store";
 import { ClientOnly } from "./client-only";
 import { createClient } from "@/lib/supabase/client";
+import { loadMemberData } from "@/lib/supabase/member-data";
 import type { UserProfile } from "@/lib/types";
 
 function AuthGate({ children }: { children: ReactNode }) {
@@ -14,6 +15,8 @@ function AuthGate({ children }: { children: ReactNode }) {
   const user = useAppStore((s) => s.user);
   const setUser = useAppStore((s) => s.setUser);
   const setHydrated = useAppStore((s) => s.setHydrated);
+  const setBookings = useAppStore((s) => s.setBookings);
+  const hydrateSnapshotResult = useAppStore((s) => s.hydrateSnapshotResult);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -25,6 +28,8 @@ function AuthGate({ children }: { children: ReactNode }) {
 
       if (!authUser) {
         setUser(null);
+        setBookings([]);
+        hydrateSnapshotResult(null);
         setHydrated();
         if (pathname !== "/") router.replace("/login");
         return;
@@ -39,6 +44,8 @@ function AuthGate({ children }: { children: ReactNode }) {
 
       if (!profile) {
         // Incomplete onboarding — redirect to finish sign-up
+        setBookings([]);
+        hydrateSnapshotResult(null);
         setHydrated();
         router.replace("/signup?step=2");
         return;
@@ -56,6 +63,9 @@ function AuthGate({ children }: { children: ReactNode }) {
       };
 
       setUser(userProfile);
+      const { snapshotResult, bookings } = await loadMemberData(supabase, authUser.id);
+      hydrateSnapshotResult(snapshotResult);
+      setBookings(bookings);
       setHydrated();
     }
 
@@ -66,13 +76,15 @@ function AuthGate({ children }: { children: ReactNode }) {
       (event) => {
         if (event === "SIGNED_OUT") {
           setUser(null);
+          setBookings([]);
+          hydrateSnapshotResult(null);
           router.replace("/login");
         }
       },
     );
 
     return () => subscription.unsubscribe();
-  }, [pathname, router, setUser, setHydrated]);
+  }, [pathname, router, setUser, setHydrated, setBookings, hydrateSnapshotResult]);
 
   if (!hydrated) {
     return (

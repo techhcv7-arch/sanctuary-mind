@@ -36,3 +36,15 @@ export function fullDateLabel(offset: number): string {
   d.setDate(d.getDate() + offset);
   return `${DAY_NAMES[d.getDay()]}, ${MONTH_NAMES[d.getMonth()]} ${d.getDate()}`;
 }
+
+export function isoDateFromOffset(offset: number): string {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() + offset);
+  return d.toISOString().slice(0, 10);
+}
+
+export function fullDateLabelFromISO(isoDate: string): string {
+  const d = new Date(`${isoDate}T00:00:00`);
+  return `${DAY_NAMES[d.getDay()]}, ${MONTH_NAMES[d.getMonth()]} ${d.getDate()}`;
+}

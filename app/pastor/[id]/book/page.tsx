@@ -5,9 +5,16 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ChevronLeft, ShieldCheck, Video } from "lucide-react";
 import { findPastor } from "@/lib/mock/pastors";
-import { dayLabelFromOffset, formatSlot, fullDateLabel } from "@/lib/utils/dates";
+import {
+  dayLabelFromOffset,
+  formatSlot,
+  fullDateLabel,
+  isoDateFromOffset,
+} from "@/lib/utils/dates";
 import { useAppStore } from "@/lib/store/app-store";
 import { toast } from "sonner";
+import { createClient } from "@/lib/supabase/client";
+import { createPastorBooking } from "@/lib/supabase/member-data";
 
 const ACCENT_COLORS: Record<string, { bg: string; text: string }> = {
   navy:  { bg: "rgba(61,90,135,0.15)",   text: "#3D5A87" },
@@ -20,6 +27,7 @@ export default function BookPastorPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const addBooking = useAppStore((s) => s.addBooking);
+  const user = useAppStore((s) => s.user);
 
   const pastor = useMemo(() => findPastor(params.id), [params.id]);
   const [selectedDay, setSelectedDay] = useState(0);
@@ -34,20 +42,33 @@ export default function BookPastorPage() {
   const colors = ACCENT_COLORS[pastor.accent] ?? ACCENT_COLORS.navy;
   const dayBlock = pastor.availability.find((a) => a.dayOffset === selectedDay);
 
-  const confirm = () => {
+  const confirm = async () => {
     if (!selectedSlot) return;
-    const id = `bk-${Date.now()}`;
-    addBooking({
-      id,
+    const booking = {
+      id: crypto.randomUUID(),
       pastorId: pastor.id,
-      dayOffset: selectedDay,
+      scheduledFor: isoDateFromOffset(selectedDay),
       slot: selectedSlot,
       confirmedAt: new Date().toISOString(),
-    });
+      status: "scheduled" as const,
+      completedAt: null,
+      cancelledAt: null,
+    };
+    addBooking(booking);
+    if (user) {
+      const supabase = createClient();
+      try {
+        await createPastorBooking(supabase, user.id, booking);
+      } catch {
+        toast.error("Booking saved locally only", {
+          description: "We could not write this session to Supabase right now.",
+        });
+      }
+    }
     toast.success("Session booked", {
       description: `${pastor.name} · ${fullDateLabel(selectedDay)} at ${formatSlot(selectedSlot)}`,
     });
-    router.push(`/pastor/${pastor.id}/book/confirmed?bk=${id}`);
+    router.push(`/pastor/${pastor.id}/book/confirmed?bk=${booking.id}`);
   };
 
   return (

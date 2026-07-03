@@ -6,6 +6,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SNAPSHOT_QUESTIONS } from "@/lib/mock/snapshot-questions";
 import { scoreSnapshot } from "@/lib/scoring/snapshot";
 import { useAppStore } from "@/lib/store/app-store";
+import { createClient } from "@/lib/supabase/client";
+import { saveSnapshotResult } from "@/lib/supabase/member-data";
+import { toast } from "sonner";
 
 export function SnapshotWizard() {
   const router = useRouter();
@@ -14,6 +17,7 @@ export function SnapshotWizard() {
   const setResult = useAppStore((s) => s.setSnapshotResult);
   const storedAnswers = useAppStore((s) => s.snapshot.answers);
   const storedText = useAppStore((s) => s.snapshot.freeText);
+  const user = useAppStore((s) => s.user);
 
   const [step, setStep] = useState(0);
   const [draftText, setDraftText] = useState(storedText);
@@ -26,10 +30,21 @@ export function SnapshotWizard() {
   const goNext = () => { if (step < total) setStep((s) => s + 1); };
   const goBack = () => { if (step > 0) setStep((s) => s - 1); };
 
-  const finish = () => {
+  const finish = async () => {
     setFreeText(draftText);
     const result = scoreSnapshot(storedAnswers, draftText);
-    setResult({ ...result, takenAt: new Date().toISOString() });
+    const finalResult = { ...result, takenAt: new Date().toISOString() };
+    setResult(finalResult);
+    if (user) {
+      const supabase = createClient();
+      try {
+        await saveSnapshotResult(supabase, user.id, finalResult);
+      } catch {
+        toast.error("Snapshot saved locally only", {
+          description: "We could not write this result to Supabase right now.",
+        });
+      }
+    }
     router.push("/snapshot/result");
   };
 

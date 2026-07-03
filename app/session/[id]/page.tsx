@@ -13,14 +13,17 @@ import {
 } from "lucide-react";
 import { findPastor } from "@/lib/mock/pastors";
 import { useAppStore } from "@/lib/store/app-store";
-import { fullDateLabel, formatSlot } from "@/lib/utils/dates";
+import { fullDateLabelFromISO, formatSlot } from "@/lib/utils/dates";
 import { toast } from "sonner";
+import { createClient } from "@/lib/supabase/client";
+import { updatePastorBookingStatus } from "@/lib/supabase/member-data";
 
 export default function SessionPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const hydrated = useAppStore((s) => s.hydrated);
-  const cancelBooking = useAppStore((s) => s.cancelBooking);
+  const completeBooking = useAppStore((s) => s.completeBooking);
+  const user = useAppStore((s) => s.user);
   const booking = useAppStore((s) => s.bookings.find((b) => b.id === params.id));
 
   const pastor = useMemo(
@@ -46,8 +49,19 @@ export default function SessionPage() {
   const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
   const ss = String(elapsed % 60).padStart(2, "0");
 
-  const end = () => {
-    cancelBooking(booking.id);
+  const end = async () => {
+    const completedAt = new Date().toISOString();
+    completeBooking(booking.id, completedAt);
+    if (user) {
+      const supabase = createClient();
+      try {
+        await updatePastorBookingStatus(supabase, booking.id, "completed", completedAt);
+      } catch {
+        toast.error("Session history updated locally only", {
+          description: "We could not write the completed status to Supabase right now.",
+        });
+      }
+    }
     toast("Session ended", { description: `${mm}:${ss} elapsed.` });
     router.push("/dashboard");
   };
@@ -113,7 +127,7 @@ export default function SessionPage() {
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
               </span>
               <span className="font-sans text-[0.65rem] font-semibold uppercase tracking-widest text-white/70">
-                Live · {fullDateLabel(booking.dayOffset)} · {formatSlot(booking.slot)}
+                Live · {fullDateLabelFromISO(booking.scheduledFor)} · {formatSlot(booking.slot)}
               </span>
             </div>
           </div>
