@@ -43,15 +43,20 @@ export interface SnapshotResult {
 
 export type FigureName =
   | "David"
-  | "Esther"
-  | "Paul"
   | "Moses"
-  | "Mary"
-  | "Job";
+  | "Elijah"
+  | "Jonah"
+  | "Peter"
+  | "Saul"
+  | "Job"
+  | "Jeremiah"
+  | "Martha"
+  | "Paul";
 
 export interface BibleFigure {
   id: FigureName;
   monogram: string;
+  portraitSrc?: string;
   strengths: string[];
   scripture: string;
   scriptureRef: string;

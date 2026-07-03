@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -19,6 +20,7 @@ export default function BibleResultPage() {
 
   if (!hydrated || !result) return null;
   const figure = BIBLE_FIGURES[result.figure];
+  if (!figure) return null;
 
   return (
     <div className="space-y-6">
@@ -56,13 +58,24 @@ export default function BibleResultPage() {
             }}
           />
           <div className="relative flex items-center gap-5 sm:gap-7">
-            {/* Monogram */}
             <div className="relative shrink-0">
-              <span
-                className="grid h-20 w-20 place-items-center rounded-2xl bg-[var(--brand-gold)] font-display text-[3.25rem] font-semibold leading-none text-[#0B0F19] shadow-lg sm:h-24 sm:w-24 sm:text-[4rem]"
-              >
-                {figure.monogram}
-              </span>
+              {figure.portraitSrc ? (
+                <div className="relative h-20 w-20 overflow-hidden rounded-2xl border-2 border-white/20 shadow-lg sm:h-24 sm:w-24">
+                  <Image
+                    src={figure.portraitSrc}
+                    alt={`${figure.id} portrait`}
+                    fill
+                    className="object-cover"
+                    sizes="96px"
+                  />
+                </div>
+              ) : (
+                <span
+                  className="grid h-20 w-20 place-items-center rounded-2xl bg-[var(--brand-gold)] font-display text-[3.25rem] font-semibold leading-none text-[#0B0F19] shadow-lg sm:h-24 sm:w-24 sm:text-[4rem]"
+                >
+                  {figure.monogram}
+                </span>
+              )}
             </div>
             <div>
               <p className="eyebrow text-[#d1dff6]/70 mb-1">

@@ -3,11 +3,9 @@ import Link from "next/link";
 import {
   ArrowRight,
   CalendarClock,
-  HandHeart,
   HeartPulse,
   MessageSquareText,
   Quote,
-  ShieldCheck,
   Star,
 } from "lucide-react";
 
@@ -21,35 +19,6 @@ const FEATURES = [
     accent: "#FF8C69",
     icon: HeartPulse,
     body: "You should not have to choose between staying silent and explaining everything to someone immediately. SanctuaryMind gives you a confidential first step when you need support and want a gentler way to begin.",
-    lines: [
-      "member_starts_here: true",
-      "conversation_mode: private",
-      "next_step: clear",
-    ],
-  },
-  {
-    label: "Understand what kind of support fits today",
-    kicker: "02 / TRIAGE",
-    accent: "#9EFFBF",
-    icon: ShieldCheck,
-    body: "The Snapshot does not diagnose you and it does not replace professional care. It helps you make sense of what you are carrying so you can move toward prayer, pastoral follow-up, licensed care, urgent help, or guided reflection with more peace and less uncertainty.",
-    lines: [
-      "diagnosis: false",
-      "handoff: pastor | prayer | companion",
-      "crisis_path: visible",
-    ],
-  },
-  {
-    label: "Move from prayer to pastoral care without starting over",
-    kicker: "03 / CONTINUITY",
-    accent: "#F4D35E",
-    icon: HandHeart,
-    body: "Prayer requests, pastoral booking, and guided support live in one place. That means you do not have to repeat your situation across separate forms, texts, or disconnected conversations just to feel seen and understood.",
-    lines: [
-      "requests: unified",
-      "booking: structured",
-      "support_history: connected",
-    ],
   },
   {
     label: "Find support between Sundays, sessions, and difficult moments",
@@ -57,11 +26,6 @@ const FEATURES = [
     accent: "#7FA8EA",
     icon: MessageSquareText,
     body: "If you need support at night, after church, or while waiting to hear back from someone, the AI Companion gives you a calm next step instead of an empty gap.",
-    lines: [
-      "availability: 24_7",
-      "tone: faith_aware",
-      "escalation: enabled",
-    ],
   },
 ] as const;
 
@@ -312,7 +276,7 @@ export default function LandingPage() {
             <div className="bg-[#f7f7f5] p-8">
               <p className="eyebrow">Why this is believable</p>
               <h2 className="mt-2 text-[2.2rem] font-semibold tracking-[-0.05em] text-[#18386e]">
-                The promise is simple: trusted support that makes room for both faith and healing.
+                Peace I leave with you; my peace I give you. I do not give to you as the world gives. Do not let your hearts be troubled and do not be afraid.
               </h2>
               <div className="mt-6 space-y-px bg-[rgba(58,58,56,0.2)]">
                 {TRUST_POINTS.map((point) => (
@@ -433,17 +397,10 @@ export default function LandingPage() {
                     {feature.body}
                   </p>
 
-                  <div className="mt-6 space-y-3">
-                    <div className="code-mock">
-                      {feature.lines.map((line) => (
-                        <div key={line}>{line}</div>
-                      ))}
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="technical-chip">clear benefit</span>
-                      <span className="technical-chip">low confusion</span>
-                      <span className="technical-chip">specific promise</span>
-                    </div>
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    <span className="technical-chip">clear benefit</span>
+                    <span className="technical-chip">low confusion</span>
+                    <span className="technical-chip">specific promise</span>
                   </div>
                 </article>
               );
@@ -456,25 +413,32 @@ export default function LandingPage() {
             <div className="bg-[#f7f7f5] p-8">
               <p className="eyebrow">The alternative</p>
               <h2 className="mt-2 text-[2.2rem] font-semibold tracking-[-0.05em] text-[#18386e]">
-                The alternative is staying stuck longer than you need to.
+                The alternative is returning, not carrying everything alone.
               </h2>
               <p className="mt-4 max-w-xl text-sm leading-7 text-[#5d6f8d]">
-                Without a clear first step, support often turns into delay. People wait too long, wonder whether their pain is serious enough, or try to find help across disconnected conversations. SanctuaryMind replaces that uncertainty with one calm path forward that connects spiritual care and clinical next steps.
+                When someone feels far from peace, the next step does not need to be confusion, shame, or more delay. SanctuaryMind is designed to help members come back toward care, truth, and connection through a practical first step that honors both spiritual restoration and wise support.
               </p>
-              <div className="mt-8 flex justify-center">
-                <div className="relative flex h-[420px] w-[420px] max-w-full items-center justify-center rounded-full border border-[rgba(58,58,56,0.2)] bg-[#f7f7f5]">
-                  <svg viewBox="0 0 420 420" className="h-full w-full" aria-hidden>
-                    <circle cx="210" cy="210" r="140" fill="none" stroke="rgba(58,58,56,0.2)" strokeDasharray="10 10" />
-                    <line x1="210" y1="210" x2="210" y2="70" stroke="rgba(58,58,56,0.2)" />
-                    <line x1="210" y1="210" x2="331" y2="278" stroke="rgba(58,58,56,0.2)" />
-                    <line x1="210" y1="210" x2="89" y2="278" stroke="rgba(58,58,56,0.2)" />
-                    <circle cx="210" cy="210" r="8" fill="#1F4D93" />
-                    <g className="orbit-spin">
-                      <circle cx="210" cy="70" r="10" fill="#9EFFBF" />
-                      <circle cx="331" cy="278" r="10" fill="#FF8C69" />
-                      <circle cx="89" cy="278" r="10" fill="#F4D35E" />
-                    </g>
-                  </svg>
+              <div className="mt-8 grid gap-px bg-[rgba(58,58,56,0.2)]">
+                <div className="relative min-h-[420px] overflow-hidden bg-[#dfe9f8]">
+                  <Image
+                    src="/landing/return-to-kingdom.jpeg"
+                    alt="A welcoming figure reaching toward a child beneath a bright sky"
+                    fill
+                    className="object-cover opacity-90"
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(18,34,68,0.08),rgba(18,34,68,0.62))]" />
+                  <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+                    <div className="max-w-2xl border border-[rgba(247,247,245,0.32)] bg-[rgba(24,56,110,0.72)] p-5 backdrop-blur-[1px]">
+                      <p className="font-mono text-[0.64rem] uppercase tracking-[0.18em] text-[#d9e7fb]">
+                        Joel 2:13b
+                      </p>
+                      <p className="mt-3 text-lg leading-8 text-[#f7f7f5] sm:text-[1.35rem] sm:leading-9">
+                        “Return to the Lord your God, for he is gracious and compassionate,
+                        slow to anger and abounding in love, and he relents from sending
+                        calamity.”
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

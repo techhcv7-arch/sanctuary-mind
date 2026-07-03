@@ -199,7 +199,7 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        <div className="grid gap-px bg-[rgba(58,58,56,0.2)] xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+        <div className="grid gap-1 border-2 border-[rgba(58,58,56,0.34)] bg-[rgba(58,58,56,0.34)] xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
           <Link href={primaryFeature.href} className="group bg-[#f7f7f5] p-8 transition hover:bg-[#eef3f9]">
             <div className="flex h-full flex-col justify-between gap-10">
               <div>
@@ -219,7 +219,7 @@ export default function DashboardPage() {
                     </p>
                   </div>
                   <span
-                    className="grid h-12 w-12 shrink-0 place-items-center border border-[rgba(58,58,56,0.2)]"
+                    className="grid h-12 w-12 shrink-0 place-items-center border-2 border-[rgba(58,58,56,0.2)]"
                     style={{ color: primaryFeature.accent }}
                   >
                     <primaryFeature.icon className="h-5 w-5" strokeWidth={1.8} />
@@ -227,7 +227,7 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              <div className="code-mock">
+              <div className="code-mock border-2">
                 <div>route.intent = "initial-care"</div>
                 <div>triage.window = "3m"</div>
                 <div>handoff.available = true</div>
@@ -235,7 +235,7 @@ export default function DashboardPage() {
             </div>
           </Link>
 
-          <div className="grid gap-px bg-[rgba(58,58,56,0.2)] sm:grid-cols-2">
+          <div className="grid gap-1 bg-[rgba(58,58,56,0.34)] sm:grid-cols-2">
             {secondaryFeatures.map((feature) => {
               const Icon = feature.icon;
               return (
@@ -260,7 +260,7 @@ export default function DashboardPage() {
                       </p>
                     </div>
                     <span
-                      className="grid h-10 w-10 shrink-0 place-items-center border border-[rgba(58,58,56,0.2)]"
+                      className="grid h-10 w-10 shrink-0 place-items-center border-2 border-[rgba(58,58,56,0.2)]"
                       style={{ color: feature.accent }}
                     >
                       <Icon className="h-4 w-4" strokeWidth={1.8} />
