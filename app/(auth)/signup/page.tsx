@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useEffect, Suspense } from "react";
+import { useState, useTransition, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Eye, EyeOff, ChevronLeft } from "lucide-react";
@@ -55,18 +55,15 @@ function SignupForm() {
     phone: "",
     churchName: "",
     denomination: "",
-    timezone: "",
+    timezone:
+      typeof window === "undefined"
+        ? "America/New_York"
+        : Intl.DateTimeFormat().resolvedOptions().timeZone || "America/New_York",
   });
   const [agreed, setAgreed] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [isGooglePending, startGoogleTransition] = useTransition();
-
-  // Auto-detect timezone
-  useEffect(() => {
-    const detected = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    setProfile((p) => ({ ...p, timezone: detected || "America/New_York" }));
-  }, []);
 
   function handleStep1(e: React.FormEvent) {
     e.preventDefault();

@@ -228,8 +228,8 @@ export default function DashboardPage() {
               </div>
 
               <div className="code-mock border-2">
-                <div>route.intent = "initial-care"</div>
-                <div>triage.window = "3m"</div>
+                <div>route.intent = &quot;initial-care&quot;</div>
+                <div>triage.window = &quot;3m&quot;</div>
                 <div>handoff.available = true</div>
               </div>
             </div>
