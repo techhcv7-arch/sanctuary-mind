@@ -3,14 +3,9 @@ import { FIGURE_NAMES } from "@/lib/mock/bible-figures";
 import type { BibleAnswer, FigureName } from "@/lib/types";
 
 export function scoreBible(answers: BibleAnswer[]): FigureName {
-  const totals: Record<FigureName, number> = {
-    David: 0,
-    Esther: 0,
-    Paul: 0,
-    Moses: 0,
-    Mary: 0,
-    Job: 0,
-  };
+  const totals = Object.fromEntries(
+    FIGURE_NAMES.map((name) => [name, 0]),
+  ) as Record<FigureName, number>;
 
   for (const ans of answers) {
     const q = BIBLE_QUESTIONS.find((qq) => qq.id === ans.questionId);
@@ -21,7 +16,6 @@ export function scoreBible(answers: BibleAnswer[]): FigureName {
     }
   }
 
-  // Tie-break by Q1 weight: figure most heavily weighted in answer to Q1.
   let winner: FigureName = "David";
   let max = -1;
   for (const name of FIGURE_NAMES) {
@@ -31,7 +25,6 @@ export function scoreBible(answers: BibleAnswer[]): FigureName {
     }
   }
 
-  // Resolve ties using Q1 weight on the chosen answer.
   const tied = FIGURE_NAMES.filter((n) => totals[n] === max);
   if (tied.length > 1) {
     const q1Answer = answers.find((a) => a.questionId === "b1");

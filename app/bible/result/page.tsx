@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -19,6 +20,7 @@ export default function BibleResultPage() {
 
   if (!hydrated || !result) return null;
   const figure = BIBLE_FIGURES[result.figure];
+  if (!figure) return null;
 
   return (
     <div className="space-y-6">
@@ -31,16 +33,16 @@ export default function BibleResultPage() {
 
       <header className="space-y-2">
         <p className="eyebrow">Bible Personality · Result</p>
-        <h1 className="font-display text-[1.875rem] font-semibold leading-tight tracking-[-0.025em] text-[#1E293B] sm:text-[2.25rem]">
+        <h1 className="font-display text-[1.875rem] font-semibold leading-tight tracking-[-0.025em] text-[#0d1f3c] sm:text-[2.25rem]">
           You resonate with{" "}
-          <span className="italic font-medium text-[#1E4170]">
+          <span className="italic font-medium text-[#2a3f6b]">
             {figure.id}.
           </span>
         </h1>
       </header>
 
       {/* Hero figure card */}
-      <div className="glass-card overflow-hidden">
+      <div className="monolith-plate overflow-hidden">
         {/* Dark hero plate — kept dark for contrast with white text inside */}
         <div
           className="relative px-5 py-8 sm:px-8 sm:py-10"
@@ -56,13 +58,24 @@ export default function BibleResultPage() {
             }}
           />
           <div className="relative flex items-center gap-5 sm:gap-7">
-            {/* Monogram */}
             <div className="relative shrink-0">
-              <span
-                className="grid h-20 w-20 place-items-center rounded-2xl bg-[var(--brand-gold)] font-display text-[3.25rem] font-semibold leading-none text-[#0B0F19] shadow-lg sm:h-24 sm:w-24 sm:text-[4rem]"
-              >
-                {figure.monogram}
-              </span>
+              {figure.portraitSrc ? (
+                <div className="relative h-20 w-20 overflow-hidden rounded-2xl border-2 border-white/20 shadow-lg sm:h-24 sm:w-24">
+                  <Image
+                    src={figure.portraitSrc}
+                    alt={`${figure.id} portrait`}
+                    fill
+                    className="object-cover"
+                    sizes="96px"
+                  />
+                </div>
+              ) : (
+                <span
+                  className="grid h-20 w-20 place-items-center rounded-2xl bg-[var(--brand-gold)] font-display text-[3.25rem] font-semibold leading-none text-[#0B0F19] shadow-lg sm:h-24 sm:w-24 sm:text-[4rem]"
+                >
+                  {figure.monogram}
+                </span>
+              )}
             </div>
             <div>
               <p className="eyebrow text-[#d1dff6]/70 mb-1">
@@ -98,7 +111,7 @@ export default function BibleResultPage() {
           {/* Scripture */}
           <section>
             <p className="eyebrow-muted mb-3">A verse for you</p>
-            <blockquote className="border-l-2 border-[#3D5A87] pl-4 pull-quote text-[1.125rem] text-foreground sm:text-[1.3rem]">
+            <blockquote className="border-l-2 border-[#D4AF37] pl-4 pull-quote text-[1.125rem] text-foreground sm:text-[1.3rem]">
               {figure.scripture}
             </blockquote>
           </section>

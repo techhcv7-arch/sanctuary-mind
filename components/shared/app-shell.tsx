@@ -7,6 +7,7 @@ import { BottomNav } from "./bottom-nav";
 import { useAppStore } from "@/lib/store/app-store";
 import { ClientOnly } from "./client-only";
 import { createClient } from "@/lib/supabase/client";
+import { loadMemberData } from "@/lib/supabase/member-data";
 import type { UserProfile } from "@/lib/types";
 
 function AuthGate({ children }: { children: ReactNode }) {
@@ -14,6 +15,8 @@ function AuthGate({ children }: { children: ReactNode }) {
   const user = useAppStore((s) => s.user);
   const setUser = useAppStore((s) => s.setUser);
   const setHydrated = useAppStore((s) => s.setHydrated);
+  const setBookings = useAppStore((s) => s.setBookings);
+  const hydrateSnapshotResult = useAppStore((s) => s.hydrateSnapshotResult);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -25,6 +28,8 @@ function AuthGate({ children }: { children: ReactNode }) {
 
       if (!authUser) {
         setUser(null);
+        setBookings([]);
+        hydrateSnapshotResult(null);
         setHydrated();
         if (pathname !== "/") router.replace("/login");
         return;
@@ -39,6 +44,8 @@ function AuthGate({ children }: { children: ReactNode }) {
 
       if (!profile) {
         // Incomplete onboarding — redirect to finish sign-up
+        setBookings([]);
+        hydrateSnapshotResult(null);
         setHydrated();
         router.replace("/signup?step=2");
         return;
@@ -56,6 +63,9 @@ function AuthGate({ children }: { children: ReactNode }) {
       };
 
       setUser(userProfile);
+      const { snapshotResult, bookings } = await loadMemberData(supabase, authUser.id);
+      hydrateSnapshotResult(snapshotResult);
+      setBookings(bookings);
       setHydrated();
     }
 
@@ -66,17 +76,19 @@ function AuthGate({ children }: { children: ReactNode }) {
       (event) => {
         if (event === "SIGNED_OUT") {
           setUser(null);
+          setBookings([]);
+          hydrateSnapshotResult(null);
           router.replace("/login");
         }
       },
     );
 
     return () => subscription.unsubscribe();
-  }, [pathname, router, setUser, setHydrated]);
+  }, [pathname, router, setUser, setHydrated, setBookings, hydrateSnapshotResult]);
 
   if (!hydrated) {
     return (
-      <div className="flex min-h-screen items-center justify-center text-muted-foreground">
+      <div className="flex min-h-screen items-center justify-center text-[#0d1f3c]/60">
         Loading…
       </div>
     );
@@ -84,7 +96,7 @@ function AuthGate({ children }: { children: ReactNode }) {
 
   if (!user) {
     return (
-      <div className="flex min-h-screen items-center justify-center text-muted-foreground">
+      <div className="flex min-h-screen items-center justify-center text-[#0d1f3c]/60">
         Loading…
       </div>
     );
@@ -97,19 +109,21 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <ClientOnly
       fallback={
-        <div className="flex min-h-screen items-center justify-center text-muted-foreground">
+        <div className="flex min-h-screen items-center justify-center text-[#18386e]/60">
           Loading…
         </div>
       }
     >
       <AuthGate>
-        <div className="flex min-h-screen flex-col">
+        <div className="relative flex min-h-screen flex-col overflow-x-clip">
           <TopBar />
-          <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-6 pb-24">
+          <main className="mx-auto w-full max-w-7xl flex-1 px-4 pb-28 pt-6 sm:px-6 lg:px-8 lg:pt-10">
             {children}
           </main>
-          <div className="fixed inset-x-0 bottom-0 z-30">
-            <BottomNav />
+          <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 px-4 pb-[max(env(safe-area-inset-bottom),0.75rem)] sm:px-6 lg:hidden">
+            <div className="pointer-events-auto mx-auto max-w-7xl">
+              <BottomNav />
+            </div>
           </div>
         </div>
       </AuthGate>

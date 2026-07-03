@@ -84,12 +84,12 @@ export default function ChatPage() {
 
         <div>
           <p className="eyebrow mb-1">Companion · 24/7</p>
-          <h1 className="font-display text-[1.75rem] font-semibold leading-tight tracking-[-0.025em] text-[#1E293B] sm:text-[2rem]">
+          <h1 className="heading-engraved font-display text-[1.75rem] font-semibold leading-tight tracking-[-0.025em] text-[#0d1f3c] sm:text-[2rem]">
             AI <span className="italic font-medium">Companion.</span>
           </h1>
         </div>
 
-        <div className="flex items-center gap-2 glass-card rounded-xl px-3.5 py-2.5 text-[0.8rem] text-muted-foreground">
+        <div className="monolith-surface flex items-center gap-2 px-3.5 py-2.5 text-[0.8rem] text-muted-foreground">
           <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-600" />
           Conversations stay on your device in this prototype.
         </div>
@@ -128,13 +128,14 @@ export default function ChatPage() {
           }}
           rows={1}
           placeholder="Share what's on your heart…"
-          className="flex-1 resize-none rounded-2xl border border-[#92b6f0]/40 bg-white/50 px-4 py-3.5 text-[0.9rem] text-foreground placeholder:text-muted-foreground focus:border-[#3D5A87] focus:outline-none focus:ring-2 focus:ring-[#3D5A87]/15"
+          className="flex-1 resize-none border border-white/20 bg-white/50 px-4 py-3.5 text-[0.9rem] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#D4AF37]/60 focus:[box-shadow:inset_0_0_0_2px_#D4AF37]"
         />
         <button
           type="submit"
           disabled={!input.trim() || thinking}
           aria-label="Send"
-          className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#3D5A87] text-white transition hover:bg-[#2D4A70] disabled:opacity-35"
+          className="grid h-12 w-12 shrink-0 place-items-center bg-[#0d1f3c] border border-[#D4AF37]/60 text-[#D4AF37] transition hover:bg-[#111e30] disabled:opacity-35 focus-visible:outline-none focus-visible:[box-shadow:inset_0_0_0_2px_#D4AF37]"
+          style={{ clipPath: "polygon(0 0, calc(100% - 0.5rem) 0, 100% 0.5rem, 100% 100%, 0 100%)" }}
         >
           <Send className="h-4 w-4" />
         </button>
@@ -148,7 +149,10 @@ function Bubble({ msg }: { msg: ChatMessage }) {
   if (isUser) {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[80%] rounded-2xl rounded-br-sm bg-[#3D5A87] px-4 py-3 text-[0.9rem] leading-relaxed text-white shadow-sm">
+        <div
+          className="max-w-[80%] bg-[#0d1f3c] border border-[#D4AF37]/40 px-4 py-3 text-[0.9rem] leading-relaxed text-[#D4AF37] shadow-sm"
+          style={{ clipPath: "polygon(0 0, calc(100% - 0.75rem) 0, 100% 0.75rem, 100% 100%, 0 100%)" }}
+        >
           <p className="whitespace-pre-wrap">{msg.content}</p>
         </div>
       </div>
@@ -157,13 +161,18 @@ function Bubble({ msg }: { msg: ChatMessage }) {
   return (
     <div className="flex justify-start">
       <div
-        className={`max-w-[88%] rounded-2xl rounded-bl-sm px-4 py-3.5 text-[0.9rem] leading-relaxed ${
+        className={`max-w-[88%] px-4 py-3.5 text-[0.9rem] leading-relaxed ${
           msg.isCrisisEscalation
             ? "border border-red-500/30 bg-red-50"
-            : "glass-card"
+            : "monolith-plate"
         }`}
+        style={
+          !msg.isCrisisEscalation
+            ? { clipPath: "polygon(0.75rem 0, 100% 0, 100% 100%, 0 100%, 0 0.75rem)" }
+            : undefined
+        }
       >
-        <p className="mb-1.5 font-sans text-[0.6rem] font-semibold uppercase tracking-wide text-[#3D5A87]">
+        <p className="mb-1.5 font-sans text-[0.6rem] font-semibold uppercase tracking-wide text-[#0d1f3c]">
           Companion
         </p>
         <p className="whitespace-pre-wrap text-foreground">{msg.content}</p>
@@ -175,11 +184,14 @@ function Bubble({ msg }: { msg: ChatMessage }) {
 function ThinkingBubble() {
   return (
     <div className="flex justify-start">
-      <div className="glass-card rounded-2xl rounded-bl-sm px-5 py-4">
+      <div
+        className="monolith-plate px-5 py-4"
+        style={{ clipPath: "polygon(0.75rem 0, 100% 0, 100% 100%, 0 100%, 0 0.75rem)" }}
+      >
         <span className="inline-flex items-end gap-1">
-          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground [animation-delay:-0.3s]" />
-          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground [animation-delay:-0.15s]" />
-          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground" />
+          <span className="h-1.5 w-1.5 animate-bounce bg-muted-foreground [animation-delay:-0.3s]" />
+          <span className="h-1.5 w-1.5 animate-bounce bg-muted-foreground [animation-delay:-0.15s]" />
+          <span className="h-1.5 w-1.5 animate-bounce bg-muted-foreground" />
         </span>
       </div>
     </div>

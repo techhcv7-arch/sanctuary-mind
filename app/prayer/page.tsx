@@ -15,14 +15,9 @@ export default function PrayerPage() {
         <ChevronLeft className="h-4 w-4" /> Today
       </Link>
 
-      <header className="relative space-y-2">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-4 right-0 h-32 w-48 rounded-full opacity-30 blur-3xl"
-          style={{ background: "radial-gradient(ellipse, var(--aurora-2) 0%, transparent 70%)" }}
-        />
+      <header className="topo-bg relative space-y-2">
         <p className="eyebrow relative">Community · Live</p>
-        <h1 className="relative font-display text-[1.875rem] font-semibold leading-tight tracking-[-0.025em] text-[#1E293B] sm:text-[2.25rem]">
+        <h1 className="heading-engraved relative font-display text-[1.875rem] font-semibold leading-tight tracking-[-0.025em] text-[#0d1f3c] sm:text-[2.25rem]">
           You <span className="italic font-medium">belong</span> here.
         </h1>
         <p className="relative max-w-prose text-[0.9rem] text-muted-foreground">
@@ -39,7 +34,7 @@ export default function PrayerPage() {
               description: "We'll alert you when new prayer calls go live.",
             })
           }
-          className="btn-ghost inline-flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-[0.875rem] font-medium transition"
+          className="btn-ghost inline-flex flex-1 items-center justify-center gap-2 px-4 py-2.5 text-[0.875rem] font-medium transition"
         >
           <BellRing className="h-4 w-4 text-amber-600" />
           Alert me to live prayers
@@ -51,25 +46,27 @@ export default function PrayerPage() {
               description: "Your pastor will moderate before sharing.",
             })
           }
-          className="btn-ghost inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-[0.875rem] font-medium transition"
+          className="btn-ghost inline-flex items-center justify-center gap-2 px-4 py-2.5 text-[0.875rem] font-medium transition"
         >
           <Plus className="h-4 w-4 text-emerald-600" />
           Request
         </button>
       </div>
 
+      <hr className="fault-line my-2" aria-hidden />
+
       {/* Prayer feed */}
       <section className="space-y-3">
         {PRAYER_FEED.map((p) => (
-          <article key={p.id} className="glass-card glass-card-hover p-4 sm:p-5">
+          <article key={p.id} className="monolith-plate monolith-plate-hover p-4 sm:p-5">
             <div className="flex items-start gap-4">
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-2 mb-2">
-                  <h3 className="font-display text-[1rem] font-semibold leading-snug text-[#1E293B]">
+                  <h3 className="font-display text-[1rem] font-semibold leading-snug text-[#0d1f3c]">
                     {p.title}
                   </h3>
                   {p.isLive && (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-red-600 px-2.5 py-0.5 font-sans text-[0.6rem] font-semibold uppercase tracking-wide text-white">
+                    <span className="inline-flex items-center gap-1.5 bg-red-600 px-2.5 py-0.5 font-sans text-[0.6rem] font-semibold uppercase tracking-wide text-white">
                       <span className="relative flex h-1.5 w-1.5">
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
                         <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />
@@ -94,10 +91,10 @@ export default function PrayerPage() {
                       : "We'll lift this up alongside you.",
                   })
                 }
-                className={`shrink-0 self-start rounded-full font-sans text-[0.72rem] font-semibold transition ${
+                className={`shrink-0 self-start font-sans text-[0.72rem] font-semibold transition ${
                   p.isLive
                     ? "bg-red-600 px-3.5 py-1.5 text-white hover:opacity-90"
-                    : "border border-[#92b6f0]/45 bg-white/40 px-3.5 py-1.5 text-[#3D5A87] hover:bg-white/65 hover:text-[#1E293B]"
+                    : "btn-ghost px-3.5 py-1.5"
                 }`}
               >
                 {p.isLive ? "Join" : "Pray"}

@@ -6,6 +6,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SNAPSHOT_QUESTIONS } from "@/lib/mock/snapshot-questions";
 import { scoreSnapshot } from "@/lib/scoring/snapshot";
 import { useAppStore } from "@/lib/store/app-store";
+import { createClient } from "@/lib/supabase/client";
+import { saveSnapshotResult } from "@/lib/supabase/member-data";
+import { toast } from "sonner";
 
 export function SnapshotWizard() {
   const router = useRouter();
@@ -14,6 +17,7 @@ export function SnapshotWizard() {
   const setResult = useAppStore((s) => s.setSnapshotResult);
   const storedAnswers = useAppStore((s) => s.snapshot.answers);
   const storedText = useAppStore((s) => s.snapshot.freeText);
+  const user = useAppStore((s) => s.user);
 
   const [step, setStep] = useState(0);
   const [draftText, setDraftText] = useState(storedText);
@@ -26,10 +30,21 @@ export function SnapshotWizard() {
   const goNext = () => { if (step < total) setStep((s) => s + 1); };
   const goBack = () => { if (step > 0) setStep((s) => s - 1); };
 
-  const finish = () => {
+  const finish = async () => {
     setFreeText(draftText);
-    const { total: t, tier } = scoreSnapshot(storedAnswers, draftText);
-    setResult({ total: t, tier, takenAt: new Date().toISOString() });
+    const result = scoreSnapshot(storedAnswers, draftText);
+    const finalResult = { ...result, takenAt: new Date().toISOString() };
+    setResult(finalResult);
+    if (user) {
+      const supabase = createClient();
+      try {
+        await saveSnapshotResult(supabase, user.id, finalResult);
+      } catch {
+        toast.error("Snapshot saved locally only", {
+          description: "We could not write this result to Supabase right now.",
+        });
+      }
+    }
     router.push("/snapshot/result");
   };
 
@@ -47,55 +62,62 @@ export function SnapshotWizard() {
             {pct}%
           </span>
         </div>
-        <div className="h-1.5 w-full rounded-full bg-[#92b6f0]/30 overflow-hidden">
+        <div className="h-1.5 w-full bg-[#92b6f0]/30 overflow-hidden">
           <div
-            className="h-full rounded-full bg-[#3D5A87] transition-all duration-500 ease-out"
+            className="h-full bg-[#0d1f3c] transition-all duration-500 ease-out"
             style={{ width: `${pct}%` }}
           />
         </div>
       </div>
 
       {/* Question card */}
-      <div className="glass-card px-5 py-6 sm:px-7 sm:py-8">
+      <div className="monolith-plate thud-in px-5 py-6 sm:px-7 sm:py-8">
         {!isFinalStep ? (
           <div>
-            <p className="eyebrow mb-3">Snapshot</p>
-            <h2 className="font-display text-[1.3rem] font-semibold leading-snug tracking-[-0.018em] text-[#1E293B] sm:text-[1.5rem]">
+            <p className="eyebrow mb-3">
+              {question.kind === "screening" ? "Clinical screening" : "Spiritual pattern"}
+            </p>
+            <h2 className="font-display text-[1.3rem] font-semibold leading-snug tracking-[-0.018em] text-[#0d1f3c] sm:text-[1.5rem]">
               {question.text}
             </h2>
+            {question.note && (
+              <p className="mt-2 max-w-2xl text-[0.84rem] leading-6 text-muted-foreground">
+                {question.note}
+              </p>
+            )}
 
             <fieldset className="mt-5 space-y-2">
               <legend className="sr-only">Answer options</legend>
               {question.options.map((opt, idx) => {
-                const selected = currentAnswer === opt.points;
+                const selected = currentAnswer === idx;
                 return (
                   <label
                     key={idx}
-                    className={`flex cursor-pointer items-center gap-3.5 rounded-xl border px-4 py-3.5 transition ${
+                    className={`flex cursor-pointer items-center gap-3.5 border px-4 py-3.5 transition ${
                       selected
-                        ? "border-[#3D5A87] bg-[#3D5A87]/10 shadow-[inset_0_0_0_1.5px_#3D5A87]"
-                        : "border-[#92b6f0]/40 bg-white/40 hover:border-[#3D5A87]/40 hover:bg-white/65"
+                        ? "border-[#0d1f3c] bg-[#0d1f3c]/10 shadow-[inset_0_0_0_1.5px_#0d1f3c]"
+                        : "border-white/20 bg-[#a0bff0] hover:border-[#0d1f3c]/30 hover:bg-[#b2cbf2]"
                     }`}
                   >
                     <input
                       type="radio"
                       name={`q-${question.id}`}
-                      value={opt.points}
+                      value={idx}
                       checked={selected}
-                      onChange={() => setAnswer(step, opt.points)}
+                      onChange={() => setAnswer(step, idx)}
                       className="sr-only"
                     />
                     <span
-                      className="grid shrink-0 place-items-center rounded-full border-[1.5px] transition"
+                      className="grid shrink-0 place-items-center border-[1.5px] transition"
                       style={{
                         height: "1.125rem",
                         width: "1.125rem",
-                        borderColor: selected ? "#3D5A87" : "rgba(61,90,135,0.35)",
-                        background: selected ? "#3D5A87" : "transparent",
+                        borderColor: selected ? "#0d1f3c" : "rgba(13,31,60,0.35)",
+                        background: selected ? "#0d1f3c" : "transparent",
                       }}
                     >
                       {selected && (
-                        <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                        <span className="h-1.5 w-1.5 bg-white" />
                       )}
                     </span>
                     <span className="text-[0.925rem] text-foreground">
@@ -109,7 +131,7 @@ export function SnapshotWizard() {
         ) : (
           <div>
             <p className="eyebrow mb-3">Optional reflection</p>
-            <h2 className="font-display text-[1.3rem] font-semibold leading-snug tracking-[-0.018em] text-[#1E293B] sm:text-[1.5rem]">
+            <h2 className="font-display text-[1.3rem] font-semibold leading-snug tracking-[-0.018em] text-[#0d1f3c] sm:text-[1.5rem]">
               Anything else on your heart?
             </h2>
             <p className="mt-2 text-[0.85rem] text-muted-foreground">
@@ -121,7 +143,7 @@ export function SnapshotWizard() {
               onChange={(e) => setDraftText(e.target.value)}
               placeholder="A few words about how you're feeling…"
               rows={5}
-              className="mt-4 w-full resize-none rounded-xl border border-[#92b6f0]/40 bg-white/50 p-4 text-[0.9rem] leading-relaxed text-foreground placeholder:text-muted-foreground focus:border-[#3D5A87] focus:outline-none focus:ring-2 focus:ring-[#3D5A87]/15"
+              className="mt-4 w-full resize-none border border-white/20 bg-white/50 p-4 text-[0.9rem] leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#D4AF37]/60 focus:[box-shadow:inset_0_0_0_2px_#D4AF37]"
             />
           </div>
         )}
@@ -133,7 +155,7 @@ export function SnapshotWizard() {
           type="button"
           onClick={goBack}
           disabled={step === 0}
-          className="btn-ghost inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-medium transition disabled:pointer-events-none disabled:opacity-40"
+          className="btn-ghost inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-medium transition disabled:pointer-events-none disabled:opacity-40"
         >
           <ChevronLeft className="h-4 w-4" /> Back
         </button>
@@ -143,7 +165,7 @@ export function SnapshotWizard() {
             type="button"
             onClick={goNext}
             disabled={currentAnswer === undefined}
-            className="btn-primary inline-flex items-center gap-1.5 rounded-full px-6 py-2.5 text-sm font-semibold transition disabled:pointer-events-none disabled:opacity-40"
+            className="btn-primary inline-flex items-center gap-1.5 px-6 py-2.5 text-sm font-semibold transition disabled:pointer-events-none disabled:opacity-40"
           >
             Continue <ChevronRight className="h-4 w-4" />
           </button>
@@ -151,7 +173,7 @@ export function SnapshotWizard() {
           <button
             type="button"
             onClick={finish}
-            className="btn-primary inline-flex items-center gap-1.5 rounded-full px-6 py-2.5 text-sm font-semibold"
+            className="btn-primary inline-flex items-center gap-1.5 px-6 py-2.5 text-sm font-semibold"
           >
             See my care path <ChevronRight className="h-4 w-4" />
           </button>

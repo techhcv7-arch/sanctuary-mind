@@ -17,7 +17,7 @@ const AUTH_ROUTES = [
   "/reset-password",
 ];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request: { headers: request.headers } });
 
   const supabase = createServerClient(
@@ -41,7 +41,6 @@ export async function middleware(request: NextRequest) {
     },
   );
 
-  // Use getUser() — validates the JWT; never use getSession() server-side
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -55,7 +54,6 @@ export async function middleware(request: NextRequest) {
   }
 
   if (user && isAuthRoute) {
-    // Allow authenticated OAuth users to complete their profile on /signup?step=2
     const step = request.nextUrl.searchParams.get("step");
     if (pathname === "/signup" && step === "2") {
       return response;
@@ -68,6 +66,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:png|jpg|svg|ico|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:png|jpg|jpeg|svg|ico|webp)$).*)",
   ],
 };

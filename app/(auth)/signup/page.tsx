@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useEffect, Suspense } from "react";
+import { useState, useTransition, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Eye, EyeOff, ChevronLeft } from "lucide-react";
@@ -34,7 +34,7 @@ interface ProfileData {
 
 export default function SignupPage() {
   return (
-    <Suspense fallback={<div className="glass-card rounded-2xl p-8 animate-pulse h-96" />}>
+    <Suspense fallback={<div className="monolith-plate p-8 animate-pulse h-96" />}>
       <SignupForm />
     </Suspense>
   );
@@ -55,18 +55,15 @@ function SignupForm() {
     phone: "",
     churchName: "",
     denomination: "",
-    timezone: "",
+    timezone:
+      typeof window === "undefined"
+        ? "America/New_York"
+        : Intl.DateTimeFormat().resolvedOptions().timeZone || "America/New_York",
   });
   const [agreed, setAgreed] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [isGooglePending, startGoogleTransition] = useTransition();
-
-  // Auto-detect timezone
-  useEffect(() => {
-    const detected = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    setProfile((p) => ({ ...p, timezone: detected || "America/New_York" }));
-  }, []);
 
   function handleStep1(e: React.FormEvent) {
     e.preventDefault();
@@ -115,14 +112,14 @@ function SignupForm() {
   }
 
   return (
-    <div className="glass-card reveal-up reveal-up-1 rounded-2xl p-8">
+    <div className="monolith-plate reveal-up reveal-up-1 p-8">
       {/* Step indicator */}
       <div className="mb-5 flex items-center gap-2">
         {([1, 2, 3] as Step[]).map((s) => (
           <div
             key={s}
-            className={`h-1 flex-1 rounded-full transition-all ${
-              s <= step ? "bg-[#3D5A87]" : "bg-[#92b6f0]/30"
+            className={`h-1 flex-1 transition-all ${
+              s <= step ? "bg-[#0d1f3c]" : "bg-white/20"
             }`}
           />
         ))}
@@ -187,7 +184,7 @@ function Step1({
   return (
     <>
       <p className="eyebrow mb-2">Create your account</p>
-      <h1 className="font-display text-[1.6rem] font-semibold leading-tight tracking-tight text-[#1E293B] mb-6">
+      <h1 className="heading-engraved font-display text-[1.6rem] font-semibold leading-tight tracking-tight text-[#0d1f3c] mb-6">
         Begin your journey
       </h1>
 
@@ -195,21 +192,21 @@ function Step1({
         type="button"
         onClick={onGoogle}
         disabled={isGooglePending || isPending}
-        className="mb-5 flex w-full items-center justify-center gap-3 rounded-xl border border-[#92b6f0]/40 bg-white/60 px-4 py-2.5 font-sans text-[0.88rem] font-medium text-[#1E293B] transition hover:bg-white/80 disabled:opacity-50"
+        className="mb-5 flex w-full items-center justify-center gap-3 border border-white/20 bg-white/60 px-4 py-2.5 font-sans text-[0.88rem] font-medium text-[#0d1f3c] transition hover:bg-white/80 disabled:opacity-50"
       >
         <GoogleIcon />
         {isGooglePending ? "Redirecting…" : "Continue with Google"}
       </button>
 
       <div className="relative mb-5 flex items-center gap-3">
-        <div className="h-px flex-1 bg-[#92b6f0]/30" />
-        <span className="font-sans text-[0.72rem] text-[#3D5A87]/50">or</span>
-        <div className="h-px flex-1 bg-[#92b6f0]/30" />
+        <div className="h-px flex-1 bg-white/20" />
+        <span className="font-sans text-[0.72rem] text-[#2a3f6b]/60">or</span>
+        <div className="h-px flex-1 bg-white/20" />
       </div>
 
       <form onSubmit={onSubmit} className="space-y-4">
         <div className="space-y-1.5">
-          <label htmlFor="su-email" className="block font-sans text-[0.78rem] font-medium text-[#3D5A87]">
+          <label htmlFor="su-email" className="block font-sans text-[0.78rem] font-medium text-[#2a3f6b]">
             Email address
           </label>
           <input
@@ -225,7 +222,7 @@ function Step1({
         </div>
 
         <div className="space-y-1.5">
-          <label htmlFor="su-password" className="block font-sans text-[0.78rem] font-medium text-[#3D5A87]">
+          <label htmlFor="su-password" className="block font-sans text-[0.78rem] font-medium text-[#2a3f6b]">
             Password
           </label>
           <div className="relative">
@@ -243,7 +240,7 @@ function Step1({
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#3D5A87]/50 hover:text-[#3D5A87]"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#2a3f6b]/50 hover:text-[#0d1f3c]"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -252,7 +249,7 @@ function Step1({
         </div>
 
         <div className="space-y-1.5">
-          <label htmlFor="su-confirm" className="block font-sans text-[0.78rem] font-medium text-[#3D5A87]">
+          <label htmlFor="su-confirm" className="block font-sans text-[0.78rem] font-medium text-[#2a3f6b]">
             Confirm password
           </label>
           <input
@@ -268,7 +265,7 @@ function Step1({
         </div>
 
         {error && (
-          <p className="rounded-lg bg-[#DC2626]/10 px-3 py-2 font-sans text-[0.78rem] text-[#DC2626]">
+          <p className="bg-[#DC2626]/10 px-3 py-2 font-sans text-[0.78rem] text-[#DC2626]">
             {error}
           </p>
         )}
@@ -278,9 +275,9 @@ function Step1({
         </button>
       </form>
 
-      <p className="mt-5 text-center font-sans text-[0.8rem] text-[#3D5A87]/70">
+      <p className="mt-5 text-center font-sans text-[0.8rem] text-[#2a3f6b]/70">
         Already have an account?{" "}
-        <Link href="/login" className="font-semibold text-[#3D5A87] hover:underline">
+        <Link href="/login" className="font-semibold text-[#0d1f3c] hover:underline">
           Sign in
         </Link>
       </p>
@@ -302,19 +299,19 @@ function Step2({
         <button
           type="button"
           onClick={onBack}
-          className="mb-4 flex items-center gap-1 font-sans text-[0.78rem] text-[#3D5A87]/70 hover:text-[#3D5A87] transition"
+          className="mb-4 flex items-center gap-1 font-sans text-[0.78rem] text-[#2a3f6b]/70 hover:text-[#0d1f3c] transition"
         >
           <ChevronLeft className="h-3.5 w-3.5" /> Back
         </button>
       )}
       <p className="eyebrow mb-2">Your profile</p>
-      <h2 className="font-display text-[1.4rem] font-semibold leading-tight tracking-tight text-[#1E293B] mb-6">
+      <h2 className="heading-engraved font-display text-[1.4rem] font-semibold leading-tight tracking-tight text-[#0d1f3c] mb-6">
         Tell us about yourself
       </h2>
 
       <form onSubmit={onSubmit} className="space-y-4">
         <div className="space-y-1.5">
-          <label htmlFor="p-name" className="block font-sans text-[0.78rem] font-medium text-[#3D5A87]">
+          <label htmlFor="p-name" className="block font-sans text-[0.78rem] font-medium text-[#2a3f6b]">
             Full name <span className="text-[#DC2626]">*</span>
           </label>
           <input
@@ -330,8 +327,8 @@ function Step2({
         </div>
 
         <div className="space-y-1.5">
-          <label htmlFor="p-phone" className="block font-sans text-[0.78rem] font-medium text-[#3D5A87]">
-            Phone number <span className="text-[#3D5A87]/40 font-normal">(optional)</span>
+          <label htmlFor="p-phone" className="block font-sans text-[0.78rem] font-medium text-[#2a3f6b]">
+            Phone number <span className="text-[#2a3f6b]/40 font-normal">(optional)</span>
           </label>
           <input
             id="p-phone"
@@ -345,8 +342,8 @@ function Step2({
         </div>
 
         <div className="space-y-1.5">
-          <label htmlFor="p-church" className="block font-sans text-[0.78rem] font-medium text-[#3D5A87]">
-            Church / Congregation <span className="text-[#3D5A87]/40 font-normal">(optional)</span>
+          <label htmlFor="p-church" className="block font-sans text-[0.78rem] font-medium text-[#2a3f6b]">
+            Church / Congregation <span className="text-[#2a3f6b]/40 font-normal">(optional)</span>
           </label>
           <input
             id="p-church"
@@ -359,8 +356,8 @@ function Step2({
         </div>
 
         <div className="space-y-1.5">
-          <label htmlFor="p-denom" className="block font-sans text-[0.78rem] font-medium text-[#3D5A87]">
-            Denomination <span className="text-[#3D5A87]/40 font-normal">(optional)</span>
+          <label htmlFor="p-denom" className="block font-sans text-[0.78rem] font-medium text-[#2a3f6b]">
+            Denomination <span className="text-[#2a3f6b]/40 font-normal">(optional)</span>
           </label>
           <input
             id="p-denom"
@@ -373,14 +370,14 @@ function Step2({
         </div>
 
         <div className="space-y-1.5">
-          <label htmlFor="p-tz" className="block font-sans text-[0.78rem] font-medium text-[#3D5A87]">
+          <label htmlFor="p-tz" className="block font-sans text-[0.78rem] font-medium text-[#2a3f6b]">
             Timezone
           </label>
           <select
             id="p-tz"
             value={profile.timezone}
             onChange={(e) => setProfile({ ...profile, timezone: e.target.value })}
-            className="auth-input appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22%233D5A87%22%20d%3D%22M6%208L1%203h10z%22%2F%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[right_0.75rem_center] pr-8"
+            className="auth-input appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22%230d1f3c%22%20d%3D%22M6%208L1%203h10z%22%2F%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[right_0.75rem_center] pr-8"
           >
             {TIMEZONES.map((tz) => (
               <option key={tz} value={tz}>
@@ -391,7 +388,7 @@ function Step2({
         </div>
 
         {error && (
-          <p className="rounded-lg bg-[#DC2626]/10 px-3 py-2 font-sans text-[0.78rem] text-[#DC2626]">
+          <p className="bg-[#DC2626]/10 px-3 py-2 font-sans text-[0.78rem] text-[#DC2626]">
             {error}
           </p>
         )}
@@ -417,19 +414,19 @@ function Step3({
       <button
         type="button"
         onClick={onBack}
-        className="mb-4 flex items-center gap-1 font-sans text-[0.78rem] text-[#3D5A87]/70 hover:text-[#3D5A87] transition"
+        className="mb-4 flex items-center gap-1 font-sans text-[0.78rem] text-[#2a3f6b]/70 hover:text-[#0d1f3c] transition"
       >
         <ChevronLeft className="h-3.5 w-3.5" /> Back
       </button>
       <p className="eyebrow mb-2">One last step</p>
-      <h2 className="font-display text-[1.4rem] font-semibold leading-tight tracking-tight text-[#1E293B] mb-3">
+      <h2 className="heading-engraved font-display text-[1.4rem] font-semibold leading-tight tracking-tight text-[#0d1f3c] mb-3">
         Review &amp; agree
       </h2>
-      <p className="font-sans text-[0.8rem] text-[#3D5A87]/80 mb-4">
+      <p className="font-sans text-[0.8rem] text-[#2a3f6b]/80 mb-4">
         Please read the SanctuaryMind User Agreement before creating your account.
       </p>
 
-      <div className="mb-4 h-64 overflow-y-auto rounded-xl border border-[#92b6f0]/40 bg-white/30 p-4">
+      <div className="mb-4 h-64 overflow-y-auto border border-white/20 bg-white/20 p-4">
         <TermsContent />
       </div>
 
@@ -439,9 +436,9 @@ function Step3({
             type="checkbox"
             checked={agreed}
             onChange={(e) => setAgreed(e.target.checked)}
-            className="mt-0.5 h-4 w-4 shrink-0 rounded border-[#92b6f0] accent-[#3D5A87]"
+            className="mt-0.5 h-4 w-4 shrink-0 border-white/30 accent-[#0d1f3c]"
           />
-          <span className="font-sans text-[0.8rem] text-[#1E293B]/80 leading-relaxed">
+          <span className="font-sans text-[0.8rem] text-[#0d1f3c]/80 leading-relaxed">
             I have read and agree to the SanctuaryMind™ User Agreement, Disclaimer, and Informed
             Consent. I understand this electronic acceptance has the same force as a handwritten
             signature.
@@ -449,7 +446,7 @@ function Step3({
         </label>
 
         {error && (
-          <p className="rounded-lg bg-[#DC2626]/10 px-3 py-2 font-sans text-[0.78rem] text-[#DC2626]">
+          <p className="bg-[#DC2626]/10 px-3 py-2 font-sans text-[0.78rem] text-[#DC2626]">
             {error}
           </p>
         )}

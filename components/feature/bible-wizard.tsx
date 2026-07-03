@@ -44,18 +44,18 @@ export function BibleWizard() {
             {pct}%
           </span>
         </div>
-        <div className="h-1.5 w-full rounded-full bg-[#92b6f0]/30 overflow-hidden">
+        <div className="h-1.5 w-full bg-[#92b6f0]/30 overflow-hidden">
           <div
-            className="h-full rounded-full bg-[#3D5A87] transition-all duration-500 ease-out"
+            className="h-full bg-[#0d1f3c] transition-all duration-500 ease-out"
             style={{ width: `${pct}%` }}
           />
         </div>
       </div>
 
       {/* Question card */}
-      <div className="glass-card px-5 py-6 sm:px-7 sm:py-8">
+      <div className="monolith-plate thud-in px-5 py-6 sm:px-7 sm:py-8">
         <p className="eyebrow mb-3">Reflection</p>
-        <h2 className="font-display text-[1.3rem] font-semibold leading-snug tracking-[-0.018em] text-[#1E293B] sm:text-[1.5rem]">
+        <h2 className="font-display text-[1.3rem] font-semibold leading-snug tracking-[-0.018em] text-[#0d1f3c] sm:text-[1.5rem]">
           {question.text}
         </h2>
 
@@ -66,10 +66,10 @@ export function BibleWizard() {
             return (
               <label
                 key={idx}
-                className={`flex cursor-pointer items-start gap-3.5 rounded-xl border px-4 py-3.5 transition ${
+                className={`flex cursor-pointer items-start gap-3.5 border px-4 py-3.5 transition ${
                   selected
-                    ? "border-[#3D5A87] bg-[#3D5A87]/10 shadow-[inset_0_0_0_1.5px_#3D5A87]"
-                    : "border-[#92b6f0]/40 bg-white/40 hover:border-[#3D5A87]/40 hover:bg-white/65"
+                    ? "border-[#0d1f3c] bg-[#0d1f3c]/10 shadow-[inset_0_0_0_1.5px_#0d1f3c]"
+                    : "border-white/20 bg-[#a0bff0] hover:border-[#0d1f3c]/30 hover:bg-[#b2cbf2]"
                 }`}
               >
                 <input
@@ -81,15 +81,15 @@ export function BibleWizard() {
                   className="sr-only"
                 />
                 <span
-                  className="mt-0.5 grid shrink-0 place-items-center rounded-full border-[1.5px] transition"
+                  className="mt-0.5 grid shrink-0 place-items-center border-[1.5px] transition"
                   style={{
                     height: "1.125rem",
                     width: "1.125rem",
-                    borderColor: selected ? "#3D5A87" : "rgba(61,90,135,0.35)",
-                    background: selected ? "#3D5A87" : "transparent",
+                    borderColor: selected ? "#0d1f3c" : "rgba(13,31,60,0.35)",
+                    background: selected ? "#0d1f3c" : "transparent",
                   }}
                 >
-                  {selected && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
+                  {selected && <span className="h-1.5 w-1.5 bg-white" />}
                 </span>
                 <span className="text-[0.925rem] leading-relaxed text-foreground">
                   {opt.label}
@@ -106,7 +106,7 @@ export function BibleWizard() {
           type="button"
           onClick={goBack}
           disabled={step === 0}
-          className="btn-ghost inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-medium transition disabled:pointer-events-none disabled:opacity-40"
+          className="btn-ghost inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-medium transition disabled:pointer-events-none disabled:opacity-40"
         >
           <ChevronLeft className="h-4 w-4" /> Back
         </button>
@@ -114,7 +114,7 @@ export function BibleWizard() {
           type="button"
           onClick={goNext}
           disabled={!currentAnswer}
-          className="btn-primary inline-flex items-center gap-1.5 rounded-full px-6 py-2.5 text-sm font-semibold transition disabled:pointer-events-none disabled:opacity-40"
+          className="btn-primary inline-flex items-center gap-1.5 px-6 py-2.5 text-sm font-semibold transition disabled:pointer-events-none disabled:opacity-40"
         >
           {step === total - 1 ? "See my result" : "Continue"}
           <ChevronRight className="h-4 w-4" />

@@ -1,28 +1,62 @@
-export type RiskTier = "low" | "moderate" | "high";
+export type RiskTier =
+  | "wellness"
+  | "prayer"
+  | "pastoral"
+  | "specialist"
+  | "clinical";
+
+export type SnapshotArchetype =
+  | "David"
+  | "Elijah"
+  | "Job"
+  | "Jonah"
+  | "Martha"
+  | "Moses"
+  | "Paul"
+  | "Peter"
+  | "Saul";
+
+export interface SnapshotOption {
+  label: string;
+  points?: 1 | 2 | 3 | 4 | 5;
+  archetype?: SnapshotArchetype;
+}
 
 export interface SnapshotQuestion {
   id: string;
   text: string;
-  options: { label: string; points: 0 | 1 | 2 | 3 }[];
+  kind: "screening" | "archetype";
+  options: SnapshotOption[];
+  note?: string;
+  critical?: boolean;
 }
 
 export interface SnapshotResult {
+  rawTotal: number;
   total: number;
   tier: RiskTier;
+  crisisOverride: boolean;
+  primaryArchetype: SnapshotArchetype | null;
+  secondaryArchetype: SnapshotArchetype | null;
   takenAt: string;
 }
 
 export type FigureName =
   | "David"
-  | "Esther"
-  | "Paul"
   | "Moses"
-  | "Mary"
-  | "Job";
+  | "Elijah"
+  | "Jonah"
+  | "Peter"
+  | "Saul"
+  | "Job"
+  | "Jeremiah"
+  | "Martha"
+  | "Paul";
 
 export interface BibleFigure {
   id: FigureName;
   monogram: string;
+  portraitSrc?: string;
   strengths: string[];
   scripture: string;
   scriptureRef: string;
@@ -63,9 +97,12 @@ export interface Pastor {
 export interface Booking {
   id: string;
   pastorId: string;
-  dayOffset: number;
+  scheduledFor: string;
   slot: string;
   confirmedAt: string;
+  status: "scheduled" | "completed" | "cancelled";
+  completedAt?: string | null;
+  cancelledAt?: string | null;
 }
 
 export interface PrayerAlert {

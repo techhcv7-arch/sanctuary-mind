@@ -7,8 +7,8 @@ export function TermsContent() {
       <p className="text-[0.75rem] text-[#3D5A87]/70">Last Updated: June 2026</p>
 
       <p>
-        Welcome to SanctuaryMind™ ("Platform"), a service provided by Hartfield Consulting LLC
-        ("Company," "we," "our," or "us"). Before accessing or using this Platform, you must
+        Welcome to SanctuaryMind™ (&quot;Platform&quot;), a service provided by Hartfield Consulting LLC
+        (&quot;Company,&quot; &quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). Before accessing or using this Platform, you must
         carefully read and agree to the following terms.
       </p>
 
@@ -135,7 +135,7 @@ export function TermsContent() {
 
       <div>
         <p className="font-semibold text-[#1E293B] mb-1">User Acknowledgment and Consent</p>
-        <p>By selecting "I Agree" and continuing to use SanctuaryMind™, you affirm that:</p>
+        <p>By selecting &quot;I Agree&quot; and continuing to use SanctuaryMind™, you affirm that:</p>
         <ol className="mt-2 ml-4 list-decimal space-y-1">
           <li>You have read and understood this Agreement.</li>
           <li>
@@ -165,7 +165,7 @@ export function TermsContent() {
           <li>You agree to be bound by these Terms of Use.</li>
         </ol>
         <p className="mt-3 text-[0.78rem] text-[#3D5A87]/80">
-          By clicking "Create Account," you acknowledge that your electronic acceptance has the same
+          By clicking &quot;Create Account,&quot; you acknowledge that your electronic acceptance has the same
           force and effect as a handwritten signature.
         </p>
       </div>

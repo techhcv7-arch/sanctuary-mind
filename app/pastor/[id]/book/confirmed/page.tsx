@@ -6,7 +6,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { ChevronLeft, CalendarPlus, Check, Video } from "lucide-react";
 import { findPastor } from "@/lib/mock/pastors";
 import { useAppStore } from "@/lib/store/app-store";
-import { formatSlot, fullDateLabel } from "@/lib/utils/dates";
+import { formatSlot, fullDateLabelFromISO } from "@/lib/utils/dates";
 
 const ACCENT_COLORS: Record<string, { bg: string; text: string }> = {
   navy:  { bg: "rgba(61,90,135,0.15)",   text: "#3D5A87" },
@@ -79,7 +79,7 @@ export default function ConfirmedPage() {
               When
             </span>
             <span className="font-display font-semibold text-[#1E293B]">
-              {fullDateLabel(booking.dayOffset)} · {formatSlot(booking.slot)}
+              {fullDateLabelFromISO(booking.scheduledFor)} · {formatSlot(booking.slot)}
             </span>
           </div>
           <div className="flex items-center justify-between py-3.5">

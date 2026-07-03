@@ -39,6 +39,7 @@ interface AppState {
   setSnapshotAnswer: (index: number, points: number) => void;
   setSnapshotFreeText: (text: string) => void;
   setSnapshotResult: (result: SnapshotResult) => void;
+  hydrateSnapshotResult: (result: SnapshotResult | null) => void;
   resetSnapshot: () => void;
 
   setBibleAnswer: (questionId: string, optionIndex: number) => void;
@@ -46,7 +47,9 @@ interface AppState {
   resetBible: () => void;
 
   addBooking: (booking: Booking) => void;
-  cancelBooking: (id: string) => void;
+  setBookings: (bookings: Booking[]) => void;
+  completeBooking: (id: string, completedAt: string) => void;
+  cancelBooking: (id: string, cancelledAt?: string) => void;
 
   appendChatMessage: (message: ChatMessage) => void;
   resetChat: () => void;
@@ -91,7 +94,7 @@ export const useAppStore = create<AppState>()(
         });
         // Clear persisted store to prevent stale data on shared devices
         if (typeof window !== "undefined") {
-          localStorage.removeItem("sanctuarymind-store");
+          localStorage.removeItem("sanctuarymind-store-v3");
         }
       },
 
@@ -107,6 +110,13 @@ export const useAppStore = create<AppState>()(
         set((state) => ({ snapshot: { ...state.snapshot, freeText: text } })),
       setSnapshotResult: (result) =>
         set((state) => ({ snapshot: { ...state.snapshot, result } })),
+      hydrateSnapshotResult: (result) =>
+        set((state) => ({
+          snapshot: {
+            ...state.snapshot,
+            result,
+          },
+        })),
       resetSnapshot: () => set({ snapshot: emptySnapshot }),
 
       setBibleAnswer: (questionId, optionIndex) =>
@@ -125,9 +135,18 @@ export const useAppStore = create<AppState>()(
 
       addBooking: (booking) =>
         set((state) => ({ bookings: [...state.bookings, booking] })),
-      cancelBooking: (id) =>
+      setBookings: (bookings) => set({ bookings }),
+      completeBooking: (id, completedAt) =>
         set((state) => ({
-          bookings: state.bookings.filter((b) => b.id !== id),
+          bookings: state.bookings.map((b) =>
+            b.id === id ? { ...b, status: "completed", completedAt } : b,
+          ),
+        })),
+      cancelBooking: (id, cancelledAt = new Date().toISOString()) =>
+        set((state) => ({
+          bookings: state.bookings.map((b) =>
+            b.id === id ? { ...b, status: "cancelled", cancelledAt } : b,
+          ),
         })),
 
       appendChatMessage: (message) =>
@@ -135,9 +154,9 @@ export const useAppStore = create<AppState>()(
       resetChat: () => set({ chat: [] }),
     }),
     {
-      name: "sanctuarymind-store-v2",
+      name: "sanctuarymind-store-v3",
       storage: createJSONStorage(() => localStorage),
-      version: 2,
+      version: 3,
       migrate: () => ({
         hydrated: false,
         user: null,
