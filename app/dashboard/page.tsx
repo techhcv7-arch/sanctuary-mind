@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -57,6 +58,8 @@ const FEATURES = [
     accent: "#1F4D93",
   },
 ] as const;
+
+const DASHBOARD_GRID_BORDER = "#F4C430";
 
 export default function DashboardPage() {
   const user = useAppStore((s) => s.user);
@@ -199,8 +202,15 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        <div className="grid gap-1 border-2 border-[rgba(58,58,56,0.34)] bg-[rgba(58,58,56,0.34)] xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-          <Link href={primaryFeature.href} className="group bg-[#f7f7f5] p-8 transition hover:bg-[#eef3f9]">
+        <div
+          className="grid border-2 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
+          style={{ borderColor: DASHBOARD_GRID_BORDER }}
+        >
+          <Link
+            href={primaryFeature.href}
+            className="group border-b-2 bg-[#f7f7f5] p-8 transition hover:bg-[#eef3f9] xl:border-b-0 xl:border-r-2"
+            style={{ borderColor: DASHBOARD_GRID_BORDER }}
+          >
             <div className="flex h-full flex-col justify-between gap-10">
               <div>
                 <p
@@ -219,30 +229,61 @@ export default function DashboardPage() {
                     </p>
                   </div>
                   <span
-                    className="grid h-12 w-12 shrink-0 place-items-center border-2 border-[rgba(58,58,56,0.2)]"
-                    style={{ color: primaryFeature.accent }}
+                    className="grid h-12 w-12 shrink-0 place-items-center border-2"
+                    style={{ borderColor: DASHBOARD_GRID_BORDER, color: primaryFeature.accent }}
                   >
                     <primaryFeature.icon className="h-5 w-5" strokeWidth={1.8} />
                   </span>
                 </div>
               </div>
 
-              <div className="code-mock border-2">
-                <div>route.intent = &quot;initial-care&quot;</div>
-                <div>triage.window = &quot;3m&quot;</div>
-                <div>handoff.available = true</div>
+              <div className="space-y-4">
+                <div
+                  className="relative min-h-[220px] overflow-hidden border-2 bg-[#e8eef8]"
+                  style={{ borderColor: DASHBOARD_GRID_BORDER }}
+                >
+                  <Image
+                    src="/dashboard/search-me.jpeg"
+                    alt="Abstract circular light pattern in green and gold tones"
+                    fill
+                    className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                  />
+                </div>
+
+                <div
+                  className="border-2 bg-[#f7f7f5] px-5 py-4"
+                  style={{ borderColor: DASHBOARD_GRID_BORDER }}
+                >
+                  <p className="font-mono text-[0.68rem] uppercase tracking-[0.12em] text-[#5d6f8d]">
+                    Psalms 139:23-24
+                  </p>
+                  <p className="mt-3 text-sm leading-7 text-[#18386e]">
+                    Search me, O God, and know my heart: try me, and know my thoughts: And see if there be any wicked way in me, and lead me in the way everlasting.
+                  </p>
+                </div>
               </div>
             </div>
           </Link>
 
-          <div className="grid gap-1 bg-[rgba(58,58,56,0.34)] sm:grid-cols-2">
-            {secondaryFeatures.map((feature) => {
+          <div className="grid sm:grid-cols-2">
+            {secondaryFeatures.map((feature, index) => {
               const Icon = feature.icon;
+
+              const secondaryBorders = [
+                index > 0 ? "border-t-2" : "",
+                index % 2 === 1 ? "sm:border-l-2" : "",
+                index >= 2 ? "sm:border-t-2" : "",
+                index < 2 ? "sm:border-t-0" : "",
+              ]
+                .filter(Boolean)
+                .join(" ");
+
               return (
                 <Link
                   key={feature.href}
                   href={feature.href}
-                  className="group bg-[#f7f7f5] p-6 transition hover:bg-[#eef3f9]"
+                  className={`group bg-[#f7f7f5] p-6 transition hover:bg-[#eef3f9] ${secondaryBorders}`}
+                  style={{ borderColor: DASHBOARD_GRID_BORDER }}
                 >
                   <p
                     className="border-l pl-3 font-mono text-[0.68rem] uppercase tracking-[0.12em] text-[#5d6f8d]"
@@ -260,8 +301,8 @@ export default function DashboardPage() {
                       </p>
                     </div>
                     <span
-                      className="grid h-10 w-10 shrink-0 place-items-center border-2 border-[rgba(58,58,56,0.2)]"
-                      style={{ color: feature.accent }}
+                      className="grid h-10 w-10 shrink-0 place-items-center border-2"
+                      style={{ borderColor: DASHBOARD_GRID_BORDER, color: feature.accent }}
                     >
                       <Icon className="h-4 w-4" strokeWidth={1.8} />
                     </span>

@@ -215,9 +215,6 @@ export default function LandingPage() {
                 Built for different moments of need, not just one kind of member.
               </h2>
             </div>
-            <p className="max-w-lg font-mono text-[0.72rem] uppercase tracking-[0.12em] leading-6 text-[#5d6f8d]">
-              Good landing pages help people self-identify fast. These paths help members understand how to start based on what they need right now.
-            </p>
           </div>
 
           <div className="grid gap-px bg-[rgba(58,58,56,0.2)] md:grid-cols-2">
@@ -311,9 +308,6 @@ export default function LandingPage() {
                 Every feature exists to make getting help feel clearer, safer, and more hopeful.
               </h2>
             </div>
-            <p className="max-w-lg font-mono text-[0.72rem] uppercase tracking-[0.12em] leading-6 text-[#5d6f8d]">
-              Instead of generic claims, each module answers a member question: what does this do for me, and why should I trust it?
-            </p>
           </div>
 
           <div className="mb-px grid gap-px bg-[rgba(58,58,56,0.2)] lg:grid-cols-[minmax(0,1.02fr)_minmax(320px,0.98fr)]">
