@@ -12,6 +12,10 @@ export interface ProfileData {
   timezone: string;
 }
 
+function existingAccountMessage() {
+  return "An account with this email already exists. Please sign in instead.";
+}
+
 function getOrigin(headersList: Awaited<ReturnType<typeof headers>>) {
   return (
     headersList.get("origin") ??
@@ -46,11 +50,21 @@ export async function signUpWithEmail(
 
   if (error) {
     if (error.code === "user_already_exists") {
-      return { error: "An account with this email already exists. Please sign in instead." };
+      return { error: existingAccountMessage() };
     }
     return { error: error.message };
   }
   if (!data.user) return { error: "Sign up failed. Please try again." };
+
+  // This app expects autoconfirm sign-ups. If no session is returned here,
+  // Supabase may be hiding an existing account or the project auth settings
+  // no longer match the app's onboarding flow.
+  if (!data.session) {
+    return {
+      error:
+        "This email may already be registered. Please sign in instead, or check your email if you just created the account.",
+    };
+  }
 
   const { error: profileError } = await supabase.from("profiles").insert({
     id: data.user.id,
@@ -64,6 +78,9 @@ export async function signUpWithEmail(
   });
 
   if (profileError) {
+    if (profileError.code === "23505") {
+      return { error: existingAccountMessage() };
+    }
     return { error: "Account created but profile save failed. Please sign in and try again." };
   }
 
